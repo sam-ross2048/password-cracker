@@ -21,6 +21,7 @@ void readFourLetterPasswords(char* passwords[]){
         char dump[65];
         readPassword(dump, fp);
         printf("Attempting to copy\n");
+        printf("%s\n", dump);
         strcpy(passwords[i], dump);
         printf("Copied\n");
         printf("%s", passwords[i]);
