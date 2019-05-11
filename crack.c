@@ -13,10 +13,13 @@ void readFourLetterPasswords(char* passwords[]){
         unsigned char* buff = (unsigned char*)malloc(sizeof(char)*33);
         char dump[65];
         fread(buff, 32, 1, fp);
+        printf("Read file...\n");
         for(int j=0;j<32;j++){
             sprintf(dump+(j*2), "%02x", buff[j]);
         }
+        printf("Trying to copy\n");
         strcpy(passwords[i], dump);
+        printf("Coppied\n");
         fp+=32;
     }
 
