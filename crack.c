@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 
 void readFourLetterPasswords(char* dump){
     FILE* fp;
