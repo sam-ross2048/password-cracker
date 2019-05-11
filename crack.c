@@ -20,7 +20,9 @@ void readFourLetterPasswords(char* passwords[]){
     for(int i=0;i<NUM_FOUR_LETTER;i++){
         char dump[65];
         readPassword(dump, fp);
+        printf("Attempting to copy\n");
         strcpy(passwords[i], dump);
+        printf("Copied\n");
         printf("%s", passwords[i]);
         fp+=32;
     }
