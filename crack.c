@@ -25,7 +25,7 @@ void readFourLetterPasswords(char* passwords){
 
 int main(int argc, char* argv[]){
 
-    char hashedPasswords[10];
+    char* hashedPasswords[10];
     readFourLetterPasswords(hashedPasswords);
     for(int i=0;i<NUM_FOUR_LETTER;i++){
         printf("%s\n", hashedPasswords[i]);
