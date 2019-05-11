@@ -9,7 +9,7 @@ void readFourLetterPasswords(char* dump){
     fread(buff, 32, 1 , fp);
     for(int i=0;i<32;i++){
         sprintf(dump+(i*2), "%02x", buff[i]);
-        printf("%02x", buff[i]);
+        printf("%02x\n", buff[i]);
     }
 }
 
