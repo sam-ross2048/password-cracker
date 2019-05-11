@@ -14,7 +14,7 @@ void readPassword(char* dump, FILE* fp){
 }
 
 
-void readFourLetterPasswords(char* passwords[]){
+void readFourLetterPasswords(char passwords[][]){
     FILE* fp;
     fp = fopen("pwd4sha256", "r");
     for(int i=0;i<NUM_FOUR_LETTER;i++){
