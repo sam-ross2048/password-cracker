@@ -5,7 +5,7 @@
 #define NUM_FOUR_LETTER 10
 
 
-void readFourLetterPasswords(char* passwords){
+void readFourLetterPasswords(char* passwords[]){
     FILE* fp;
     fp = fopen("pwd4sha256", "r");
 
