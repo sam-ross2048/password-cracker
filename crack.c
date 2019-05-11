@@ -14,7 +14,7 @@ void readPassword(char* dump, FILE* fp){
 }
 
 
-void readFourLetterPasswords(char* passwords[65]){
+void readFourLetterPasswords(char** passwords){
     FILE* fp;
     fp = fopen("pwd4sha256", "r");
     for(int i=0;i<NUM_FOUR_LETTER;i++){
@@ -22,6 +22,7 @@ void readFourLetterPasswords(char* passwords[65]){
         readPassword(dump, fp);
         printf("Attempting to copy\n");
         printf("%s\n", dump);
+        passwords[i] = (char*)malloc(sizeof(char)*65);
         strcpy(passwords[i], dump);
         printf("Copied\n");
         printf("%s", passwords[i]);
@@ -32,7 +33,7 @@ void readFourLetterPasswords(char* passwords[65]){
 
 int main(int argc, char* argv[]){
 
-    char passwords[NUM_FOUR_LETTER][65];
+    char* passwords[NUM_FOUR_LETTER];
     readFourLetterPasswords(passwords);
     //printf("%s\n", dump);
     return 0;
