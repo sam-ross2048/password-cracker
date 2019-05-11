@@ -32,7 +32,7 @@ void readFourLetterPasswords(char* passwords[]){
 
 int main(int argc, char* argv[]){
 
-    char* passwords[NUM_FOUR_LETTER];
+    char passwords[NUM_FOUR_LETTER][65];
     readFourLetterPasswords(passwords);
     //printf("%s\n", dump);
     return 0;
