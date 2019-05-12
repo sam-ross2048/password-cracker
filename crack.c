@@ -19,13 +19,11 @@ void readFourLetterPasswords(char** passwords){
     fp = fopen("pwd4sha256", "r");
     for(int i=0;i<NUM_FOUR_LETTER;i++){
         char dump[65];
+        printf("Reading password\n");
         readPassword(dump, fp);
-        printf("Attempting to copy\n");
-        printf("%s\n", dump);
+        printf("Read pass\n");
         passwords[i] = (char*)malloc(sizeof(char)*65);
         strcpy(passwords[i], dump);
-        printf("Copied\n");
-        printf("%s", passwords[i]);
         fp+=32;
     }
 }
