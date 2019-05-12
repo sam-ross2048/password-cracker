@@ -24,7 +24,7 @@ void readFourLetterPasswords(char** passwords){
         printf("Read pass\n");
         passwords[i] = (char*)malloc(sizeof(char)*65);
         strcpy(passwords[i], dump);
-        fp+=32;
+        //fp+=32;
     }
 }
 
