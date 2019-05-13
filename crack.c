@@ -5,6 +5,8 @@
 
 #define NUM_FOUR_LETTER 10
 
+/* Function to convert bytes to hexadecimal string. Code written by Brad Conte
+    found from same source code as sha256.c and sha256.h */
 char *sha256_byteToHexString(BYTE data[]) {
 	char *hexC = "0123456789abcdef";
 	char *hexS = malloc(65);
@@ -17,7 +19,8 @@ char *sha256_byteToHexString(BYTE data[]) {
 	return hexS;
 }
 
-
+/* Function to find the hashed version of a guessed password. Code written by
+    Brad Conte, found from same source code as sha256.c and sha256.h */
 char *sha256S(const char *bufferToHash) {
 	if (!bufferToHash) return NULL;
 	SHA256_CTX ctx;
@@ -55,8 +58,7 @@ void guessPasswords(char** passwords){
     char* guess = "samr";
     char* hashedGuess = sha256S(guess);
     for(int i=0;i<NUM_FOUR_LETTER;i++){
-        printf("%s\n", hashedGuess);
-        printf("%s\n\n", passwords[i]);
+        printf("%s\n", passwords[i]);
         if(strcmp(passwords[i], hashedGuess)==0){
             printf("MATCH!\n");
         }
