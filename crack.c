@@ -34,6 +34,7 @@ void guessPasswords(char** passwords){
     sha256_init(data);
     printf("Initialised\n");
     sha256_final(data, guess);
+    printf("Finalising sha\n");
     for(int i=0;i<NUM_FOUR_LETTER;i++){
         printf("Comparing passwords\n");
         if(strcmp(passwords[i], data->data)==0){
