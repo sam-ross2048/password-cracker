@@ -30,17 +30,14 @@ void readFourLetterPasswords(char** passwords){
 void guessPasswords(char** passwords){
     char* guess = "samr";
     SHA256_CTX* data = (SHA256_CTX*)malloc(sizeof(SHA256_CTX));
-    printf("Initialising sha\n");
     sha256_init(data);
-    printf("Initialised\n");
     sha256_update(data, guess, strlen(guess));
-    printf("Finalising sha\n");
     for(int i=0;i<NUM_FOUR_LETTER;i++){
-        printf("Comparing passwords\n");
+        printf("%s\n", data->data);
+        printf("%s\n\n", passwords[i]);
         if(strcmp(passwords[i], data->data)==0){
             printf("MATCH!\n");
         }
-        printf("Compared\n");
     }
 
 }
