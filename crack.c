@@ -33,9 +33,9 @@ void guessPasswords(char** passwords){
     sha256_init(data);
     sha256_update(data, guess, strlen(guess));
     for(int i=0;i<NUM_FOUR_LETTER;i++){
-        printf("%s\n", data->data);
+        printf("%s\n", data->state);
         printf("%s\n\n", passwords[i]);
-        if(strcmp(passwords[i], data->data)==0){
+        if(strcmp(passwords[i], data->state)==0){
             printf("MATCH!\n");
         }
     }
