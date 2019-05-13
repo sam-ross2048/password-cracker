@@ -30,18 +30,6 @@ char *sha256S(const char *bufferToHash) {
 }
 
 
-char *sha256_byteToHexString(BYTE data[]) {
-	char *hexC = "0123456789abcdef";
-	char *hexS = malloc(65);
-	if (!hexS) return NULL;
-	for(BYTE i; i<32; i++) {
-		hexS[i*2]   = hexC[data[i]>>4];
-		hexS[i*2+1] = hexC[data[i]&0xF];
-	}
-	hexS[64] = 0;
-	return hexS;
-}
-
 void readPasswordFromFile(char* dump, FILE* fp){
     unsigned char* buff = (unsigned char*)malloc(sizeof(char)*33);
     fread(buff, 32, 1, fp);
