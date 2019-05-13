@@ -23,8 +23,6 @@ void readFourLetterPasswords(char** passwords){
         readPassword(dump, fp);
         passwords[i] = (char*)malloc(sizeof(char)*65);
         strcpy(passwords[i], dump);
-        printf("%s\n", passwords[i]);
-        //fp+=32;
     }
 }
 
@@ -35,10 +33,11 @@ void guessPasswords(char** passwords){
     sha256_init(data);
     sha256_final(data, guess);
     for(int i=0;i<NUM_FOUR_LETTER;i++){
+        printf("Comparing passwords\n");
         if(strcmp(passwords[i], data->data)==0){
             printf("MATCH!\n");
         }
-
+        printf("Compared\n");
     }
 
 }
