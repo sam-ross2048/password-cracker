@@ -33,7 +33,7 @@ void guessPasswords(char** passwords){
     printf("Initialising sha\n");
     sha256_init(data);
     printf("Initialised\n");
-    sha256_final(data, guess);
+    sha256_update(data, guess, strlen(guess));
     printf("Finalising sha\n");
     for(int i=0;i<NUM_FOUR_LETTER;i++){
         printf("Comparing passwords\n");
