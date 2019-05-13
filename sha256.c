@@ -18,7 +18,7 @@
 /*************************** HEADER FILES ***************************/
 #include <stdlib.h>
 #include <memory.h>
-#include <string.h>
+
 /****************************** MACROS ******************************/
 #define ROTLEFT(a,b) (((a) << (b)) | ((a) >> (32-(b))))
 #define ROTRIGHT(a,b) (((a) >> (b)) | ((a) << (32-(b))))
@@ -157,30 +157,4 @@ void sha256_final(SHA256_CTX *ctx, BYTE hash[])
 		hash[i + 24] = (ctx->state[6] >> (24 - i * 8)) & 0x000000ff;
 		hash[i + 28] = (ctx->state[7] >> (24 - i * 8)) & 0x000000ff;
 	}
-}
-
-char *sha256_byteToHexString(BYTE data[]) {
-	char *hexC = "0123456789abcdef";
-	char *hexS = malloc(65);
-	if (!hexS) return NULL;
-	for(BYTE i; i<32; i++) {
-		hexS[i*2]   = hexC[data[i]>>4];
-		hexS[i*2+1] = hexC[data[i]&0xF];
-	}
-	hexS[64] = 0;
-	return hexS;
-}
-
-
-char *sha256S(const char *bufferToHash) {
-	if (!bufferToHash) return NULL;
-
-	SHA256_CTX ctx;
-	sha256_init(&ctx);
-	sha256_update(&ctx, bufferToHash, strlen(bufferToHash));
-	BYTE result[32];
-	sha256_final(&ctx, result);
-
-	char *hexS = sha256_byteToHexString(result);
-	return hexS;
 }
