@@ -17,18 +17,18 @@
 int power(int g, unsigned int b, int p)
 {
     int res = 1;     // Initialize result
-
+    g = g % p;
     while (b > 0)
     {
         // If y is odd, multiply x with result
         if (b & 1)
-            res = res*g;
+            res = (res*g)%p;
 
         // n must be even now
         b = b>>1; // y = y/2
-        g = g*g;  // Change x to x^2
+        g = g*g%p;  // Change x to x^2
     }
-    return res%p;
+    return res;
 }
 
 
