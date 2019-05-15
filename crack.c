@@ -34,7 +34,7 @@ char *sha256S(const char *bufferToHash) {
 }
 
 
-void readPasswordFromFile(char* dump, FILE* fp){
+void readSinglePassword(char* dump, FILE* fp){
     unsigned char* buff = (unsigned char*)malloc(sizeof(char)*33);
     fread(buff, 32, 1, fp);
     for(int i=0;i<32;i++){
@@ -51,15 +51,14 @@ int findNumberPasswords(char* fileName){
 }
 
 
-void readFourLetterPasswords(char** passwords, char* filename){
+void readPasswords(char** passwords, char* filename){
     FILE* fp;
     fp = fopen(filename, "r");
 
     int numPasswords = findNumberPasswords(filename);
-    printf("%d\n", numPasswords);
-    for(int i=0;i<NUM_FOUR_LETTER;i++){
+    for(int i=0;i<numPasswords;i++){
         char dump[65];
-        readPasswordFromFile(dump, fp);
+        readSinglePassword(dump, fp);
         passwords[i] = (char*)malloc(sizeof(char)*65);
         strcpy(passwords[i], dump);
     }
@@ -80,7 +79,7 @@ void guessPasswords(char** passwords){
 int main(int argc, char* argv[]){
 
     char* passwords[NUM_FOUR_LETTER];
-    readFourLetterPasswords(passwords, "pwd4sha256");
+    readNumberPasswords(passwords, "pwd4sha256");
     guessPasswords(passwords);
     return 0;
 }
