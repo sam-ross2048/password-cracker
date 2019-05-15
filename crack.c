@@ -10,6 +10,13 @@
 #define FOUR_LETTER_FILE "pwd4sha256"
 #define SIX_LETTER_FILE "pwd6sha256"
 
+typedef struct{
+    char* passwords[],
+    int length;
+}passwords_t;
+
+
+
 /* Function to convert bytes to hexadecimal string. Code written by Brad Conte
     found from same source code as sha256.c and sha256.h */
 char *sha256_byteToHexString(BYTE data[]) {
