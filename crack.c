@@ -5,6 +5,10 @@
 
 #define NUM_HASHES 30
 #define HASH_LENGTH 32
+#define HASH_SIZE 65
+
+#define FOUR_LETTER_FILE "pwd4sha256"
+#define SIX_LETTER_FILE "pwd6sha256"
 
 /* Function to convert bytes to hexadecimal string. Code written by Brad Conte
     found from same source code as sha256.c and sha256.h */
@@ -35,9 +39,9 @@ char *sha256S(const char *bufferToHash) {
 
 
 void readSinglePassword(char* dump, FILE* fp){
-    unsigned char* buff = (unsigned char*)malloc(sizeof(char)*33);
-    fread(buff, 32, 1, fp);
-    for(int i=0;i<32;i++){
+    unsigned char* buff = (unsigned char*)malloc(sizeof(char)*(HASH_LENGTH+1));
+    fread(buff, HASH_LENGTH, 1, fp);
+    for(int i=0;i<HASH_LENGTH;i++){
         sprintf(dump+(i*2), "%02x", buff[i]);
     }
 }
@@ -51,16 +55,15 @@ int findNumberPasswords(char* fileName){
 }
 
 
-void readPasswords(char** passwords, char* filename){
+void readPasswords(char* passwords[], char* filename){
     FILE* fp;
     fp = fopen(filename, "r");
 
     int numPasswords = findNumberPasswords(filename);
-    passwords = (char**)malloc(sizeof(char*)*numPasswords);
     for(int i=0;i<numPasswords;i++){
-        char dump[65];
+        char dump[HASH_SIZE];
         readSinglePassword(dump, fp);
-        passwords[i] = (char*)malloc(sizeof(char)*65);
+        passwords[i] = (char*)malloc(sizeof(char)*HASH_SIZE);
         strcpy(passwords[i], dump);
     }
 }
@@ -79,8 +82,8 @@ void guessPasswords(char** passwords){
 
 int main(int argc, char* argv[]){
 
-    char** fourLetterPasswords;
-    readPasswords(fourLetterPasswords, "pwd4sha256");
+    char* fourLetterPasswords[findNumberPasswords(FOUR_LETTER_FILE)];
+    readPasswords(fourLetterPasswords, FOUR_LETTER_FILE);
     guessPasswords(fourLetterPasswords);
     return 0;
 }
