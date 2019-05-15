@@ -3,7 +3,7 @@
 #include <string.h>
 #include "sha256.h"
 
-#define NUM_FOUR_LETTER 10
+#define NUM_HASHES 30
 #define HASH_LENGTH 32
 
 /* Function to convert bytes to hexadecimal string. Code written by Brad Conte
@@ -56,6 +56,7 @@ void readPasswords(char** passwords, char* filename){
     fp = fopen(filename, "r");
 
     int numPasswords = findNumberPasswords(filename);
+    passwords = (char**)malloc(sizeof(char*)*numPasswords);
     for(int i=0;i<numPasswords;i++){
         char dump[65];
         readSinglePassword(dump, fp);
@@ -78,7 +79,7 @@ void guessPasswords(char** passwords){
 
 int main(int argc, char* argv[]){
 
-    char* passwords[NUM_FOUR_LETTER];
+    char** fourLetterPasswords;
     readPasswords(passwords, "pwd4sha256");
     guessPasswords(passwords);
     return 0;
