@@ -45,6 +45,9 @@ void readPasswordFromFile(char* dump, FILE* fp){
 void readFourLetterPasswords(char** passwords){
     FILE* fp;
     fp = fopen("pwd4sha256", "r");
+    struct stat sb;
+    stat("pwd4sha256", &sb);
+    printf("FileSize: %d", sb.st_size);
     for(int i=0;i<NUM_FOUR_LETTER;i++){
         char dump[65];
         readPasswordFromFile(dump, fp);
