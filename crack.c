@@ -79,7 +79,7 @@ void guessPasswords(char** passwords){
 int main(int argc, char* argv[]){
 
     char* passwords[NUM_FOUR_LETTER];
-    readNumberPasswords(passwords, "pwd4sha256");
+    readPasswords(passwords, "pwd4sha256");
     guessPasswords(passwords);
     return 0;
 }
