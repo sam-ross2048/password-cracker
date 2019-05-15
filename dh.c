@@ -103,6 +103,7 @@ int main(int argc, char ** argv)
 
         char sent[256];
         sprintf(sent, "%d", power(g, b, p));
+        sent[strlen(sent)] = '\n';
         printf("%s\n", sent);
         n = write(sockfd, sent, strlen(sent));
         if (n < 0)
@@ -122,6 +123,7 @@ int main(int argc, char ** argv)
         int fromServer = atoi(received);
         char final[256];
         sprintf(final, "%d", power(fromServer, b, p));
+        final[strlen(final)] = '\n';
         n = write(sockfd, final, strlen(final));
 
         n = read(sockfd, buffer, 255);
