@@ -89,7 +89,7 @@ int main(int argc, char ** argv)
 
         char* username = "samr1\n";
 
-        n = write(sockfd, buffer, strlen(buffer));
+        n = write(sockfd, username, strlen(username));
         if (n < 0)
         {
             perror("ERROR writing to socket");
