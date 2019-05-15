@@ -4,6 +4,7 @@
 #include "sha256.h"
 
 #define NUM_FOUR_LETTER 10
+#define HASH_LENGTH 32
 
 /* Function to convert bytes to hexadecimal string. Code written by Brad Conte
     found from same source code as sha256.c and sha256.h */
@@ -41,13 +42,21 @@ void readPasswordFromFile(char* dump, FILE* fp){
     }
 }
 
+int findNumberPasswords(char* fileName){
+    FILE* fp = fopen(fileName, "r");
+    fseek(fp, 0L, SEEK_END);
+    long int res = ftell(fp);
+    fclose(fp);
+    return (int)res%HASH_LENGTH;
+}
 
-void readFourLetterPasswords(char** passwords){
+
+void readFourLetterPasswords(char** passwords, char* filename){
     FILE* fp;
-    fp = fopen("pwd4sha256", "r");
-    struct stat sb;
-    stat("pwd4sha256", &sb);
-    printf("FileSize: %d", sb.st_size);
+    fp = fopen(filename, "r");
+
+    int numPasswords = findNumberPasswords(filename);
+    printf("%d\n", numPasswords);
     for(int i=0;i<NUM_FOUR_LETTER;i++){
         char dump[65];
         readPasswordFromFile(dump, fp);
@@ -71,7 +80,7 @@ void guessPasswords(char** passwords){
 int main(int argc, char* argv[]){
 
     char* passwords[NUM_FOUR_LETTER];
-    readFourLetterPasswords(passwords);
+    readFourLetterPasswords(passwords, "pwd4sha256");
     guessPasswords(passwords);
     return 0;
 }
