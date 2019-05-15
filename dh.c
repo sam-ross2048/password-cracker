@@ -47,7 +47,7 @@ int main(int argc, char ** argv)
     }*/
 
     portno = 7800;
-    int b = argv[1];
+    int b = atoi(argv[1]);
     /* Translate host name into peer's IP address ;
      * This is name translation service by the operating system */
     server = gethostbyname("172.26.37.44");
@@ -120,7 +120,7 @@ int main(int argc, char ** argv)
         sprintf(final, "%d", power(fromServer, b, p));
         n = write(sockfd, final, strlen(final));
 
-        n = read(sockfd, buffer, 255){
+        n = read(sockfd, buffer, 255);
         if (n < 0)
         {
             perror("ERROR reading from socket");
