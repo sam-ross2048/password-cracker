@@ -47,7 +47,7 @@ int findNumberPasswords(char* fileName){
     fseek(fp, 0L, SEEK_END);
     long int res = ftell(fp);
     fclose(fp);
-    return (int)res%HASH_LENGTH;
+    return (int)res/HASH_LENGTH;
 }
 
 
