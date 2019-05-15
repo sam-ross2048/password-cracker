@@ -11,7 +11,7 @@
 #define SIX_LETTER_FILE "pwd6sha256"
 
 typedef struct{
-    char* passwords[],
+    char* passwords[];
     int length;
 }passwords_t;
 
