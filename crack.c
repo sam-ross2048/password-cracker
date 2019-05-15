@@ -83,7 +83,11 @@ void guessPasswords(char** passwords){
 int main(int argc, char* argv[]){
 
     char* fourLetterPasswords[findNumberPasswords(FOUR_LETTER_FILE)];
+    char* sixLetterPasswords[findNumberPasswords(SIX_LETTER_FILE)];
     readPasswords(fourLetterPasswords, FOUR_LETTER_FILE);
+    readPasswords(sixLetterPasswords, SIX_LETTER_FILE);
     guessPasswords(fourLetterPasswords);
+    printf("\n\n");
+    guessPasswords(sixLetterPasswords);
     return 0;
 }
