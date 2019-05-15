@@ -9,6 +9,8 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <math.h>
+
 
 /* Code taken from https://www.geeksforgeeks.org/modular-exponentiation-power-in-modular-arithmetic
     used to calculate large powers without overflow. */
