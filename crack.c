@@ -69,7 +69,7 @@ void readPasswords(char** passwords, char* filename){
 void guessPasswords(char** passwords){
     char* guess = "samr";
     char* hashedGuess = sha256S(guess);
-    for(int i=0;i<NUM_FOUR_LETTER;i++){
+    for(int i=0;i<10;i++){
         printf("%s\n", passwords[i]);
         if(strcmp(passwords[i], hashedGuess)==0){
             printf("MATCH!\n");
@@ -80,7 +80,7 @@ void guessPasswords(char** passwords){
 int main(int argc, char* argv[]){
 
     char** fourLetterPasswords;
-    readPasswords(passwords, "pwd4sha256");
-    guessPasswords(passwords);
+    readPasswords(fourLetterPasswords, "pwd4sha256");
+    guessPasswords(fourLetterPasswords);
     return 0;
 }
