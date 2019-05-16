@@ -77,7 +77,7 @@ void guessFourLetter(char** fourLetter, char* guess){
     char* hashedGuess = sha256S(guess);
     for(int i=0;i<NUM_FOUR_LETTER;i++){
         if(strcmp(fourLetter[i], hashedGuess)==0){
-            printf("%s %d\n", guess, i);
+            printf("%s %d   %s\n", guess, i, hashedGuess);
         }
     }
 }
@@ -87,7 +87,7 @@ void guessSixLetter(char** sixLetter, char* guess){
     char* hashedGuess = sha256S(guess);
     for(int i=0;i<NUM_SIX_LETTER;i++){
         if(strcmp(sixLetter[i], hashedGuess)==0){
-            printf("%s %d\n", guess, i+NUM_FOUR_LETTER);
+            printf("%s %d   %s\n", guess, i+NUM_FOUR_LETTER, hashedGuess);
         }
     }
 }
