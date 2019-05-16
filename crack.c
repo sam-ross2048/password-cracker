@@ -92,15 +92,11 @@ void guessSixLetter(char** sixLetter, char* guess){
     }
 }
 
+
 char* zeroPad(int number, int numDigits){
     char* guess = (char*)malloc(sizeof(char)*numDigits+1);
-
     sprintf(guess, "%04d", number);
-    printf("%s\n", guess);
     return guess;
-    /*for(int i=0;i<strlen(guess);i++){
-        if(guess[i] == ' ') guess[i] = '0';
-    }*/
 }
 
 
