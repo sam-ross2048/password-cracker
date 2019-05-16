@@ -10,13 +10,6 @@
 #define FOUR_LETTER_FILE "pwd4sha256"
 #define SIX_LETTER_FILE "pwd6sha256"
 
-typedef struct{
-    char** passwords;
-    int length;
-}passwords_t;
-
-
-
 /* Function to convert bytes to hexadecimal string. Code written by Brad Conte
     found from same source code as sha256.c and sha256.h */
 char *sha256_byteToHexString(BYTE data[]) {
@@ -79,7 +72,7 @@ void readPasswords(char* passwords[], char* filename){
 void guessPasswords(char** passwords){
     char* guess = "samr";
     char* hashedGuess = sha256S(guess);
-    for(int i=0;i<10;i++){
+    for(int i=0;i<20;i++){
         printf("%s\n", passwords[i]);
         if(strcmp(passwords[i], hashedGuess)==0){
             printf("MATCH!\n");
@@ -89,12 +82,12 @@ void guessPasswords(char** passwords){
 
 int main(int argc, char* argv[]){
 
-    char* fourLetterPasswords[findNumberPasswords(FOUR_LETTER_FILE)];
-    char* sixLetterPasswords[findNumberPasswords(SIX_LETTER_FILE)];
-    readPasswords(fourLetterPasswords, FOUR_LETTER_FILE);
-    readPasswords(sixLetterPasswords, SIX_LETTER_FILE);
-    guessPasswords(fourLetterPasswords);
+    char* fourLetter[findNumberPasswords(FOUR_LETTER_FILE)];
+    char* sixLetter[findNumberPasswords(SIX_LETTER_FILE)];
+    readPasswords(fourLetter, FOUR_LETTER_FILE);
+    readPasswords(sixLetter, SIX_LETTER_FILE);
+    //guessPasswords(fourLetter);
     printf("\n\n");
-    guessPasswords(sixLetterPasswords);
+    guessPasswords(sixLetter);
     return 0;
 }
