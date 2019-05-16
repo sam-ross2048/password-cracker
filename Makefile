@@ -2,7 +2,7 @@
 CC = gcc
 
 crack: crack.o sha256.o
-	$(CC) -o crack crack.o sha256.o
+	$(CC) -o crack crack.o sha256.o -lm
 
 main.o: crack.c sha256.h
 	$(CC) -c crack.c
