@@ -92,27 +92,27 @@ void guessSixLetter(char** sixLetter, char* guess){
     }
 }
 
-void zeroPad(char* guess){
-    for(int i=0;i<strlen(guess);i++){
+char* zeroPad(int number, int numDigits){
+    char* guess = (char*)malloc(sizeof(char)*numDigits+1);
+
+    sprintf(guess, "%04d", number);
+    printf("%s\n", guess);
+    return guess;
+    /*for(int i=0;i<strlen(guess);i++){
         if(guess[i] == ' ') guess[i] = '0';
-    }
+    }*/
 }
 
 
 void guessNumbers(char** passwords, int numDigits){
     int maxValue = pow(10, numDigits);
-    char* guess = (char*)malloc(sizeof(char)*maxValue);
+    char* guess = (char*)malloc(sizeof(char)*numDigits+1);
     for(int i=0;i<maxValue;i++){
-        sprintf(guess, "%d", i);
+        guess = zeroPad(i, numDigits);
         if(numDigits==4){
-            guess = sprintf("%04s", guess);
-            zeroPad(guess);
-            printf("%s\n", guess);
             guessFourLetter(passwords, guess);
         }
         else{
-            guess = sprintf("%06s", guess);
-            zeroPad(guess);
             guessSixLetter(passwords, guess);
         }
     }
