@@ -105,13 +105,13 @@ void guessNumbers(char** passwords, int numDigits){
     for(int i=0;i<maxValue;i++){
         sprintf(guess, "%d", i);
         if(numDigits==4){
-            sprintf(guess, "%04s", guess);
+            guess = sprintf("%04s", guess);
             zeroPad(guess);
             printf("%s\n", guess);
             guessFourLetter(passwords, guess);
         }
         else{
-            sprintf(guess, "%06s", guess);
+            guess = sprintf("%06s", guess);
             zeroPad(guess);
             guessSixLetter(passwords, guess);
         }
