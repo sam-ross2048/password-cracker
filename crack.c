@@ -69,6 +69,7 @@ void readPasswords(char* passwords[], char* filename){
         readSinglePassword(dump, fp);
         passwords[i] = (char*)malloc(sizeof(char)*HASH_SIZE);
         strcpy(passwords[i], dump);
+        printf("%s\n", passwords[i]);
     }
 }
 
