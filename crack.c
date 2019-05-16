@@ -10,6 +10,9 @@
 #define FOUR_LETTER_FILE "pwd4sha256"
 #define SIX_LETTER_FILE "pwd6sha256"
 
+#define NUM_FOUR_LETTER 10
+#define NUM_SIX_LETTER 20
+
 /* Function to convert bytes to hexadecimal string. Code written by Brad Conte
     found from same source code as sha256.c and sha256.h */
 char *sha256_byteToHexString(BYTE data[]) {
@@ -69,16 +72,51 @@ void readPasswords(char* passwords[], char* filename){
 }
 
 
-void guessPasswords(char** passwords){
-    char* guess = "samr";
+void guessFourLetter(char** fourLetter, char* guess){
     char* hashedGuess = sha256S(guess);
-    for(int i=0;i<20;i++){
-        printf("%s\n", passwords[i]);
-        if(strcmp(passwords[i], hashedGuess)==0){
-            printf("MATCH!\n");
+    for(int i=0;i<NUM_FOUR_LETTER;i++){
+        if(strcmp(fourLetter[i], hashedGuess)==0){
+            printf("%s %d\n", guess, i);
         }
     }
 }
+
+
+void guessSixLetter(char** sixLetter, char* guess){
+    char* hashedGuess = sha256S(guess);
+    for(int i=0;i<NUM_SIX_LETTER;i++){
+        if(strcmp(sixLetter[i], hashedGuess)==0){
+            printf("%s %d\n", guess, i+NUM_FOUR_LETTER);
+        }
+    }
+}
+
+void zeroPad(char* guess){
+    for(int i=0;i<strlen(guess);i++){
+        if(guess[i] == ' ') guess[i] = '0';
+    }
+}
+
+
+void guessNumbers(char** passwords, int numDigits){
+    int maxValue = pow(10, numDigits);
+    char* guess = (char*)malloc(sizeof(char)*maxValue);
+    for(int i=0;i<maxValue;i++){
+        guess = itoa(i);
+        if(numDigits==4){
+            sprintf("%04s", guess);
+            zeroPad(guess);
+            printf("%s\n", guess);
+            guessFourLetter(passwords, guess);
+        }
+        else{
+            sprintf("%06s", guess);
+            zeroPad(guess);
+            guessSixLetter(passwords, guess);
+        }
+    }
+}
+
 
 int main(int argc, char* argv[]){
 
@@ -86,8 +124,8 @@ int main(int argc, char* argv[]){
     char* sixLetter[findNumberPasswords(SIX_LETTER_FILE)];
     readPasswords(fourLetter, FOUR_LETTER_FILE);
     readPasswords(sixLetter, SIX_LETTER_FILE);
-    //guessPasswords(fourLetter);
+    guessNumbers(fourLetter, 4);
     printf("\n\n");
-    guessPasswords(sixLetter);
+    //guessPasswords(sixLetter);
     return 0;
 }
