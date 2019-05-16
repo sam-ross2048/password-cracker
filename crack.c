@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "sha256.h"
 
 #define NUM_HASHES 30
@@ -102,7 +103,7 @@ void guessNumbers(char** passwords, int numDigits){
     int maxValue = pow(10, numDigits);
     char* guess = (char*)malloc(sizeof(char)*maxValue);
     for(int i=0;i<maxValue;i++){
-        guess = itoa(i);
+        sprintf(guess, "%d", i);
         if(numDigits==4){
             sprintf("%04s", guess);
             zeroPad(guess);
