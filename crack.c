@@ -122,7 +122,7 @@ int main(int argc, char* argv[]){
     readPasswords(fourLetter, FOUR_LETTER_FILE);
     readPasswords(sixLetter, SIX_LETTER_FILE);
     guessNumbers(fourLetter, 4);
-    printf("\n\n");
+    guessNumbers(sixLetter, 6);
     //guessPasswords(sixLetter);
     return 0;
 }
