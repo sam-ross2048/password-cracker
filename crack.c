@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -116,6 +117,37 @@ void guessNumbers(char** passwords, int numDigits){
 }
 
 
+bool readFilePassword(FILE* fp, char* word, int length){
+	int i=0;
+	bool end = false;
+	for(c=getc(fp);c!='\n'||i==length-1;c=getc(fp)){
+		word[i] = c;
+		i++;
+		if(c==EOF){
+			end = true;
+		}
+	}
+	word[i] = '\0';
+	return end;
+}
+
+void checkFilePasswords(char* filename, char** passwords, int length){
+	char word[length+1];
+	FILE *fp;
+	fp = fopen(filename, "r");
+
+	while(readFilePassword(fp, word, length)!=true){
+		word[length] = '\0';
+		if(length==4){
+			guessFourLetter(passwords, word);
+		}
+		else{
+			guessSixLetter(passwords, word);
+		}
+	}
+
+}
+
 int main(int argc, char* argv[]){
 
     char* fourLetter[findNumberPasswords(FOUR_LETTER_FILE)];
@@ -124,6 +156,8 @@ int main(int argc, char* argv[]){
     readPasswords(sixLetter, SIX_LETTER_FILE);
     guessNumbers(fourLetter, 4);
     guessNumbers(sixLetter, 6);
+	checkFilePasswords("common_passwords.txt", fourLetter, 4);
+	checkFilePasswords("common_passwords.txt", sixLetter, 6);
     //guessPasswords(sixLetter);
     return 0;
 }
