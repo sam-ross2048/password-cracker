@@ -139,6 +139,7 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
+		printf("%s\n", word);
 		if(length==4){
 			guessFourLetter(passwords, word);
 		}
