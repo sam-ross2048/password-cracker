@@ -121,7 +121,7 @@ void guessNumbers(char** passwords, int numDigits){
 bool readFilePassword(FILE* fp, char* word, int length){
 	int i=0;
 	bool end = false;
-	for(c=getc(fp);c!='\n'||i==length-1;c=getc(fp)){
+	for(char c=getc(fp);c!='\n'||i==length-1;c=getc(fp)){
 		word[i] = c;
 		i++;
 		if(c==EOF){
