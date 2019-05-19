@@ -126,6 +126,7 @@ bool readFilePassword(FILE* fp, char* word, int length){
 		i++;
 		if(c==EOF){
 			end = true;
+			break;
 		}
 	}
 	word[i] = '\0';
