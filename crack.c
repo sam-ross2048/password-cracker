@@ -158,6 +158,7 @@ int main(int argc, char* argv[]){
     guessNumbers(fourLetter, 4);
     guessNumbers(sixLetter, 6);
 	checkFilePasswords("common_passwords.txt", fourLetter, 4);
+	printf("RAN THRU 4 LETTER\n");
 	checkFilePasswords("common_passwords.txt", sixLetter, 6);
     //guessPasswords(sixLetter);
     return 0;
