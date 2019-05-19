@@ -140,7 +140,6 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
-		printf("%s\n", word);
 		if(length==4){
 			guessFourLetter(passwords, word);
 		}
@@ -160,7 +159,6 @@ int main(int argc, char* argv[]){
     guessNumbers(fourLetter, 4);
     guessNumbers(sixLetter, 6);
 	checkFilePasswords("common_passwords.txt", fourLetter, 4);
-	printf("RAN THRU 4 LETTER\n");
 	checkFilePasswords("common_passwords.txt", sixLetter, 6);
     //guessPasswords(sixLetter);
     return 0;
