@@ -145,11 +145,13 @@ void alphabetToDigit(char* word, char** passwords, int length){
 
 
 void upperCaseGuess(char* word, char** passwords, int length){
-
-	if(word[0]>='a' && word[0]<='z'){
-		word[0] = word[0] - 32;
+	char* copy = (char*)malloc(sizeof(char)*length+1);
+	strcpy(copy, word);
+	if(copy[0]>='a' && copy[0]<='z'){
+		copy[0] = copy[0] - 32;
 	}
-	guess(passwords, word, length);
+	guess(passwords, copy, length);
+	free(copy);
 }
 
 bool readFilePassword(FILE* fp, char* word, int length){
