@@ -14,6 +14,9 @@ FOUR LETTER:
 
 SIX LETTER:
 
+"Shibby"    d23ebee830d29f0272e2ecb463642c8a01e988f5c98b65a5ab557fcaa7c81010
+
+
 "shibby"    c5ad410aa325b0fb6909cd571d1ec07ad21325bed3f05807daf506a25bb3757d
 
 
