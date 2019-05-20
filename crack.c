@@ -216,29 +216,6 @@ static void bruteForce(char** passwords, int maxlen){
 }
 
 
-
-/*void recurBrute(char* buff, char** passwords, int index, int depth, int length){
-	for(int i=0;i<94;++i){
-		buff[index] = (char)(i+32);
-		if(index==depth-1){
-			guess(passwords, buff, length);
-		}
-		else{
-			recurBrute(buff, passwords, index+1, depth, length);
-		}
-	}
-}
-
-void bruteForce(char** passwords, int length){
-	char* buff = (char*)malloc(sizeof(char)*(length+1));
-	for(int i=1;i<=length;++i){
-		memset(buff, 32, length);
-		recurBrute(buff, passwords, 0, i, length);
-	}
-	free(buff);
-}*/
-
-
 char* zeroPad(int number, int numDigits){
     char* guess = (char*)malloc(sizeof(char)*(numDigits+1));
     sprintf(guess, "%04d", number);
@@ -317,8 +294,8 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
 		guess(passwords, word, length);
-		upperCaseGuess(word, passwords, length);
-		alphabetToDigit(word, passwords, length);
+		//upperCaseGuess(word, passwords, length);
+		//alphabetToDigit(word, passwords, length);
 	}
 
 }
@@ -334,7 +311,7 @@ int main(int argc, char* argv[]){
 	checkFilePasswords("common_passwords.txt", fourLetter, 4);
 	checkFilePasswords("common_passwords.txt", sixLetter, 6);
 	//checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
-	//bruteForce(fourLetter, 4);
+	bruteForce(fourLetter, 4);
     //guessPasswords(sixLetter);
     return 0;
 }
