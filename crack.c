@@ -76,17 +76,27 @@ void readPasswords(char* passwords[], char* filename){
 }
 
 
-void guessFourLetter(char** fourLetter, char* guess){
+void guessFourLetter(char** fourLetter, char* guess, int length){
     char* hashedGuess = sha256S(guess);
-    for(int i=0;i<NUM_FOUR_LETTER;i++){
+	int number;
+	int offset=0;
+	if(length==4){
+		 number = NUM_FOUR_LETTER;
+	 }
+	else {
+		number = NUM_SIX_LETTER;
+		offset = NUM_FOUR_LETTER;
+	}
+
+	for(int i=0;i<number;i++){
         if(strcmp(fourLetter[i], hashedGuess)==0){
-            printf("%s %d   %s\n", guess, i, hashedGuess);
+            printf("%s %d   %s\n", guess, i+offset, hashedGuess);
         }
     }
 }
 
 
-void guessSixLetter(char** sixLetter, char* guess){
+void guessSixLetter(char** sixLetter, char* guess, int number){
     char* hashedGuess = sha256S(guess);
     for(int i=0;i<NUM_SIX_LETTER;i++){
         if(strcmp(sixLetter[i], hashedGuess)==0){
@@ -109,10 +119,10 @@ void guessNumbers(char** passwords, int numDigits){
     for(int i=0;i<maxValue;i++){
         guess = zeroPad(i, numDigits);
         if(numDigits==4){
-            guessFourLetter(passwords, guess);
+            guessFourLetter(passwords, guess, 4);
         }
         else{
-            guessSixLetter(passwords, guess);
+            guessFourLetter(passwords, guess, 6);
         }
     }
 }
@@ -141,10 +151,10 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
 		if(length==4){
-			guessFourLetter(passwords, word);
+			guessFourLetter(passwords, word, 4);
 		}
 		else{
-			guessSixLetter(passwords, word);
+			guessFourLetter(passwords, word, 6);
 		}
 	}
 
