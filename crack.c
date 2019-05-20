@@ -97,6 +97,7 @@ void guess(char** fourLetter, char* guess, int length){
             printf("%s %d   %s\n", guess, i+offset, hashedGuess);
         }
     }
+	free(hashedGuess);
 }
 
 static void bruteForce(char** passwords, int maxlen){
@@ -290,7 +291,7 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 	char word[length+1];
 	FILE *fp;
 	fp = fopen(filename, "r");
-	
+
 
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
@@ -298,7 +299,7 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 		//upperCaseGuess(word, passwords, length);
 		//alphabetToDigit(word, passwords, length);
 	}
-
+	fclose(fp);
 }
 
 int main(int argc, char* argv[]){
