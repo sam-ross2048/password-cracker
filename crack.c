@@ -60,6 +60,27 @@ int findNumberPasswords(char* fileName){
     return (int)res/HASH_LENGTH;
 }
 
+void recurBrute(char* buff, char** passwords, int index, int depth, int length){
+	for(int i=0;i<=94;i++){
+		buff[index] = (char)(i+32);
+		if(index==depth){
+			guess(passwords, buff, length);
+		}
+		else{
+			recurBrute(buff, passwords, index+1, depth, length);
+		}
+	}
+}
+
+void bruteForce(char** passwords, int length){
+	char* buff = (char*)malloc(sizeof(char)*(length+1));
+	for(int i=0;i<length;i++){
+		memset(buff, 32, length);
+		recurBrute(buff, passwords, 0, i, length);
+	}
+	free(buff);
+}
+
 
 void readPasswords(char* passwords[], char* filename){
     FILE* fp;
@@ -106,7 +127,7 @@ void guessSixLetter(char** sixLetter, char* guess, int number){
 
 
 char* zeroPad(int number, int numDigits){
-    char* guess = (char*)malloc(sizeof(char)*numDigits+1);
+    char* guess = (char*)malloc(sizeof(char)*(numDigits+1));
     sprintf(guess, "%04d", number);
     return guess;
 }
@@ -114,7 +135,7 @@ char* zeroPad(int number, int numDigits){
 
 void guessNumbers(char** passwords, int numDigits){
     int maxValue = pow(10, numDigits);
-    char* word = (char*)malloc(sizeof(char)*numDigits+1);
+    char* word = (char*)malloc(sizeof(char)*(numDigits+1));
     for(int i=0;i<maxValue;i++){
         word = zeroPad(i, numDigits);
         guess(passwords, word, numDigits);
@@ -123,7 +144,7 @@ void guessNumbers(char** passwords, int numDigits){
 
 
 void changeLetter(char letter, char replacement, char* word, char** passwords, int length){
-	char* copy = (char*)malloc(sizeof(char)*length+1);
+	char* copy = (char*)malloc(sizeof(char)*(length+1));
 	strcpy(copy, word);
 	char* position = strstr(copy, &letter);
 	if(position){
@@ -148,7 +169,7 @@ void alphabetToDigit(char* word, char** passwords, int length){
 
 
 void upperCaseGuess(char* word, char** passwords, int length){
-	char* copy = (char*)malloc(sizeof(char)*length+1);
+	char* copy = (char*)malloc(sizeof(char)*(length+1));
 	strcpy(copy, word);
 	if(copy[0]>='a' && copy[0]<='z'){
 		copy[0] = copy[0] - 32;
@@ -196,6 +217,7 @@ int main(int argc, char* argv[]){
     guessNumbers(sixLetter, 6);
 	checkFilePasswords("common_passwords.txt", fourLetter, 4);
 	checkFilePasswords("common_passwords.txt", sixLetter, 6);
+	bruteForce(fourLetter, 4);
     //guessPasswords(sixLetter);
     return 0;
 }
