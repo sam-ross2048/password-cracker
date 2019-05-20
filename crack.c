@@ -124,7 +124,7 @@ void guessNumbers(char** passwords, int numDigits){
 
 void upperCaseGuess(char* word, char** passwords, int length){
 
-	if(word[0]>="a" && word[0]<="z"){
+	if(word[0]>='a' && word[0]<='z'){
 		word[0] = word[0] - 32;
 	}
 	guess(passwords, word, length);
