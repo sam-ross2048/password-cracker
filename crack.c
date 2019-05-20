@@ -122,6 +122,13 @@ void guessNumbers(char** passwords, int numDigits){
     }
 }
 
+void upperCaseGuess(char* word, char** passwords, int length){
+
+	if(word[0]>="a" && word[0]<="z"){
+		word[0] = word[0] - 32;
+	}
+	guess(passwords, word, length);
+}
 
 bool readFilePassword(FILE* fp, char* word, int length){
 	int i=0;
@@ -146,6 +153,7 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
 		guess(passwords, word, length);
+		upperCaseGuess(word, passwords, length);
 	}
 
 }
