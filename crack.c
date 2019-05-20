@@ -105,8 +105,7 @@ static void bruteForce(char** passwords, int maxlen){
     char *buffer   = malloc((maxlen + 1) * alphaLen * alphaLen);
     int  *letters  = malloc(maxlen * sizeof(int));
 
-	int fd = open("bruteGenerated.txt", O_WRONLY | O_APPEND);
-	printf("%d\n", fd);
+	int fd = open("bruteGenerated.txt", O_CREATE | O_RDWR);
     if (buffer == NULL || letters == NULL) {
 		fprintf(stderr, "Not enough memory.\n");
 		exit(1);
