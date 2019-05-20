@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <string.h>
 #include <math.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include "sha256.h"
 
 #define NUM_HASHES 30
