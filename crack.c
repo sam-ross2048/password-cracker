@@ -105,7 +105,8 @@ static void bruteForce(char** passwords, int maxlen){
     char *buffer   = malloc((maxlen + 1) * alphaLen * alphaLen);
     int  *letters  = malloc(maxlen * sizeof(int));
 
-	int fd = open("bruteGenerated.txt", O_CREATE | O_RDWR);
+	//int fd = open("bruteGenerated.txt", O_CREATE | O_RDWR);
+	FILE *fp = fopen("bruteGenerated.txt", "w");
     if (buffer == NULL || letters == NULL) {
 		fprintf(stderr, "Not enough memory.\n");
 		exit(1);
@@ -128,7 +129,8 @@ static void bruteForce(char** passwords, int maxlen){
 				buffer[j++] = (char)(i+ALPHABET_OFFSET);
 				buffer[j++] = '\n';
 		    }
-		    write(fd, buffer, bufLen);
+		    //write(fd, buffer, bufLen);
+			fprintf(fp, "%s", buffer);
 		    continue;
 		}
 
@@ -156,7 +158,8 @@ static void bruteForce(char** passwords, int maxlen){
 		}
 
 		// Write the first sequence out.
-		write(fd, buffer, bufLen);
+		//write(fd, buffer, bufLen);
+		fprintf(fp, "%s", buffer);
 
 		// Special case for length 2, we're already done.
 		if (len == 2){
@@ -189,7 +192,8 @@ static void bruteForce(char** passwords, int maxlen){
 		    if (letters[i] != 0) {
 			// No wraparound, so we finally finished incrementing.
 			// Write out this set.  Reset i back to third to last letter.
-			write(fd, buffer, bufLen);
+			//write(fd, buffer, bufLen);
+			fprintf(fp, "%s", buffer);
 			i = len - 3;
 			continue;
 		    }
