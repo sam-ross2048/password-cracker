@@ -118,7 +118,7 @@ void guessNumbers(char** passwords, int numDigits){
     char* guess = (char*)malloc(sizeof(char)*numDigits+1);
     for(int i=0;i<maxValue;i++){
         guess = zeroPad(i, numDigits);
-        guess(passwords, word, numDigits);
+        guess(passwords, guess, numDigits);
     }
 }
 
