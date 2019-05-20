@@ -211,7 +211,7 @@ static void bruteForce(char** passwords, int maxlen){
     // Clean up.
     free(letters);
     free(buffer);
-
+	fclose(fp);
 
 }
 
@@ -277,6 +277,8 @@ void alphabetToDigit(char* word, char** passwords, int length){
 	changeLetter('A', '4', word, passwords, length);
 	changeLetter('O', '0', word, passwords, length);
 	changeLetter('L', '1', word, passwords, length);
+	changeLetter('s', '$', word, passwords, length);
+	changeLetter('S', '$', word, passwords, length);
 }
 
 
@@ -315,8 +317,8 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
 		guess(passwords, word, length);
-		//upperCaseGuess(word, passwords, length);
-		//alphabetToDigit(word, passwords, length);
+		upperCaseGuess(word, passwords, length);
+		alphabetToDigit(word, passwords, length);
 	}
 
 }
@@ -331,7 +333,7 @@ int main(int argc, char* argv[]){
     guessNumbers(sixLetter, 6);
 	checkFilePasswords("common_passwords.txt", fourLetter, 4);
 	checkFilePasswords("common_passwords.txt", sixLetter, 6);
-	checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
+	//checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
 	//bruteForce(fourLetter, 4);
     //guessPasswords(sixLetter);
     return 0;
