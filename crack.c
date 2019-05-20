@@ -306,6 +306,7 @@ bool readFilePassword(FILE* fp, char* word, int length){
 	return end;
 }
 
+
 void checkFilePasswords(char* filename, char** passwords, int length){
 	char word[length+1];
 	FILE *fp;
@@ -314,8 +315,8 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
 		guess(passwords, word, length);
-		upperCaseGuess(word, passwords, length);
-		alphabetToDigit(word, passwords, length);
+		//upperCaseGuess(word, passwords, length);
+		//alphabetToDigit(word, passwords, length);
 	}
 
 }
