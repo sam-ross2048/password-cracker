@@ -140,6 +140,10 @@ void alphabetToDigit(char* word, char** passwords, int length){
 	changeLetter('l', '1', word, passwords, length);
 	changeLetter('a', '4', word, passwords, length);
 	changeLetter('o', '0', word, passwords, length);
+	changeLetter('I', '1', word, passwords, length);
+	changeLetter('A', '4', word, passwords, length);
+	changeLetter('O', '0', word, passwords, length);
+	changeLetter('L', '1', word, passwords, length);
 }
 
 
