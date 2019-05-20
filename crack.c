@@ -13,6 +13,9 @@
 #define FOUR_LETTER_FILE "pwd4sha256"
 #define SIX_LETTER_FILE "pwd6sha256"
 
+#define ALPHABET_LENGTH 94
+#define ALPHABET_OFFSET 32
+
 #define NUM_FOUR_LETTER 10
 #define NUM_SIX_LETTER 20
 
@@ -94,8 +97,120 @@ void guess(char** fourLetter, char* guess, int length){
     }
 }
 
+static void bruteForce(char** passwords, int maxlen){
+    int   alphaLen = ALPHABET_LENGTH;
+    int   len      = 0;
+    char *buffer   = malloc((maxlen + 1) * alphaLen * alphaLen);
+    int  *letters  = malloc(maxlen * sizeof(int));
 
-void recurBrute(char* buff, char** passwords, int index, int depth, int length){
+	int fd = open("bruteGenerated.txt", O_WRONLY | O_APPEND);
+
+    if (buffer == NULL || letters == NULL) {
+		fprintf(stderr, "Not enough memory.\n");
+		exit(1);
+    }
+
+    // This for loop generates all 1 letter patterns, then 2 letters, etc,
+    // up to the given maxlen.
+    for (len=1;len<=maxlen;len++) {
+		// The stride is one larger than len because each line has a '\n'.
+		int i;
+		int stride = len+1;
+		int bufLen = stride * alphaLen * alphaLen;
+
+		if (len == 1) {
+		    // Special case.  The main algorithm hardcodes the last two
+		    // letters, so this case needs to be handled separately.
+		    int j = 0;
+		    bufLen = (len + 1) * alphaLen;
+		    for (i=0;i<alphaLen;i++) {
+				buffer[j++] = (char)(i+ALPHABET_OFFSET);
+				buffer[j++] = '\n';
+		    }
+		    write(fd, buffer, bufLen);
+		    continue;
+		}
+
+		// Initialize buffer to contain all first letters.
+		memset(buffer, (char)(ALPHABET_OFFSET), bufLen);
+
+		// Now write all the last 2 letters and newlines, which
+		// will after this not change during the main algorithm.
+		{
+		    // Let0 is the 2nd to last letter.  Let1 is the last letter.
+		    int let0 = 0;
+		    int let1 = 0;
+		    for (i=len-2;i<bufLen;i+=stride) {
+			buffer[i]   = (char)(let0 + ALPHABET_OFFSET);
+			buffer[i+1] = (char)(let1 + ALPHABET_OFFSET);
+			let1++;
+			buffer[i+2] = '\n';
+			if (let1 == alphaLen) {
+			    let1 = 0;
+			    let0++;
+			    if (let0 == alphaLen)
+				let0 = 0;
+			}
+		    }
+		}
+
+		// Write the first sequence out.
+		write(fd, buffer, bufLen);
+
+		// Special case for length 2, we're already done.
+		if (len == 2){
+		    continue;
+		}
+
+		// Set all the letters to 0.
+		for (i=0;i<len;i++){
+		    letters[i] = 0;
+		}
+
+		// Now on each iteration, increment the the third to last letter.
+		i = len-3;
+		do {
+		    char c;
+		    int  j;
+
+		    // Increment this letter.
+		    letters[i]++;
+
+		    // Handle wraparound.
+		    if (letters[i] >= alphaLen)
+			letters[i] = 0;
+
+		    // Set this letter in the proper places in the buffer.
+		    c = (char)(letters[i]+ALPHABET_OFFSET);
+		    for (j=i;j<bufLen;j+=stride)
+			buffer[j] = c;
+
+		    if (letters[i] != 0) {
+			// No wraparound, so we finally finished incrementing.
+			// Write out this set.  Reset i back to third to last letter.
+			write(fd, buffer, bufLen);
+			i = len - 3;
+			continue;
+		    }
+
+		    // The letter wrapped around ("carried").  Set up to increment
+		    // the next letter on the left.
+		    i--;
+		    // If we carried past last letter, we're done with this
+		    // whole length.
+		    if (i < 0)
+			break;
+		} while(1);
+    }
+
+    // Clean up.
+    free(letters);
+    free(buffer);
+}
+
+
+
+/*void recurBrute(char* buff, char** passwords, int index, int depth, int length){
 	for(int i=0;i<94;++i){
 		buff[index] = (char)(i+32);
 		if(index==depth-1){
@@ -114,7 +229,7 @@ void bruteForce(char** passwords, int length){
 		recurBrute(buff, passwords, 0, i, length);
 	}
 	free(buff);
-}
+}*/
 
 
 char* zeroPad(int number, int numDigits){
