@@ -122,7 +122,7 @@ void guessNumbers(char** passwords, int numDigits){
     }
 }
 
-void alphabetToDigit(char** passwords, char* word, int length){
+void alphabetToDigit(char* word, char** passwords, int length){
 	changeLetter('i', '1', word, passwords, length);
 	changeLetter('l', '1', word, passwords, length);
 	changeLetter('a', '4', word, passwords, length);
@@ -130,7 +130,6 @@ void alphabetToDigit(char** passwords, char* word, int length){
 }
 
 void changeLetter(char letter, char replacement, char* word, char** passwords, int length){
-	/* CHANGE TO CREATE A COPY, NOT USE SAME WORD */
 	char* copy = (char*)malloc(sizeof(char)*length+1);
 	strcpy(copy, word);
 	char* position = strstr(copy, letter);
@@ -174,6 +173,7 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 		word[length] = '\0';
 		guess(passwords, word, length);
 		upperCaseGuess(word, passwords, length);
+		alphaBetToDigit(word, passwords, length)
 	}
 
 }
