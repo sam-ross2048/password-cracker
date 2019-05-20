@@ -96,9 +96,9 @@ void guess(char** fourLetter, char* guess, int length){
 
 
 void recurBrute(char* buff, char** passwords, int index, int depth, int length){
-	for(int i=0;i<=94;i++){
+	for(int i=0;i<94;++i){
 		buff[index] = (char)(i+32);
-		if(index==depth){
+		if(index==depth-1){
 			guess(passwords, buff, length);
 		}
 		else{
@@ -109,7 +109,7 @@ void recurBrute(char* buff, char** passwords, int index, int depth, int length){
 
 void bruteForce(char** passwords, int length){
 	char* buff = (char*)malloc(sizeof(char)*(length+1));
-	for(int i=0;i<length;i++){
+	for(int i=1;i<=length;++i){
 		memset(buff, 32, length);
 		recurBrute(buff, passwords, 0, i, length);
 	}
