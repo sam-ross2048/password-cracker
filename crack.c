@@ -115,10 +115,10 @@ char* zeroPad(int number, int numDigits){
 
 void guessNumbers(char** passwords, int numDigits){
     int maxValue = pow(10, numDigits);
-    char* guess = (char*)malloc(sizeof(char)*numDigits+1);
+    char* word = (char*)malloc(sizeof(char)*numDigits+1);
     for(int i=0;i<maxValue;i++){
-        guess = zeroPad(i, numDigits);
-        guess(passwords, guess, numDigits);
+        word = zeroPad(i, numDigits);
+        guess(passwords, word, numDigits);
     }
 }
 
