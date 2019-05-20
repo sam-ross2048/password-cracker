@@ -290,6 +290,7 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 	char word[length+1];
 	FILE *fp;
 	fp = fopen(filename, "r");
+	
 
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
