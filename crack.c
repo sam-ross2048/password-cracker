@@ -176,7 +176,7 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 		word[length] = '\0';
 		guess(passwords, word, length);
 		upperCaseGuess(word, passwords, length);
-		alphaBetToDigit(word, passwords, length)
+		alphabetToDigit(word, passwords, length)
 	}
 
 }
