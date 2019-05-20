@@ -211,6 +211,8 @@ static void bruteForce(char** passwords, int maxlen){
     // Clean up.
     free(letters);
     free(buffer);
+
+
 }
 
 
@@ -328,7 +330,8 @@ int main(int argc, char* argv[]){
     guessNumbers(sixLetter, 6);
 	checkFilePasswords("common_passwords.txt", fourLetter, 4);
 	checkFilePasswords("common_passwords.txt", sixLetter, 6);
-	bruteForce(fourLetter, 4);
+	checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
+	//bruteForce(fourLetter, 4);
     //guessPasswords(sixLetter);
     return 0;
 }
