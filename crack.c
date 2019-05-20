@@ -60,27 +60,6 @@ int findNumberPasswords(char* fileName){
     return (int)res/HASH_LENGTH;
 }
 
-void recurBrute(char* buff, char** passwords, int index, int depth, int length){
-	for(int i=0;i<=94;i++){
-		buff[index] = (char)(i+32);
-		if(index==depth){
-			guess(passwords, buff, length);
-		}
-		else{
-			recurBrute(buff, passwords, index+1, depth, length);
-		}
-	}
-}
-
-void bruteForce(char** passwords, int length){
-	char* buff = (char*)malloc(sizeof(char)*(length+1));
-	for(int i=0;i<length;i++){
-		memset(buff, 32, length);
-		recurBrute(buff, passwords, 0, i, length);
-	}
-	free(buff);
-}
-
 
 void readPasswords(char* passwords[], char* filename){
     FILE* fp;
@@ -116,13 +95,25 @@ void guess(char** fourLetter, char* guess, int length){
 }
 
 
-void guessSixLetter(char** sixLetter, char* guess, int number){
-    char* hashedGuess = sha256S(guess);
-    for(int i=0;i<NUM_SIX_LETTER;i++){
-        if(strcmp(sixLetter[i], hashedGuess)==0){
-            printf("%s %d   %s\n", guess, i+NUM_FOUR_LETTER, hashedGuess);
-        }
-    }
+void recurBrute(char* buff, char** passwords, int index, int depth, int length){
+	for(int i=0;i<=94;i++){
+		buff[index] = (char)(i+32);
+		if(index==depth){
+			guess(passwords, buff, length);
+		}
+		else{
+			recurBrute(buff, passwords, index+1, depth, length);
+		}
+	}
+}
+
+void bruteForce(char** passwords, int length){
+	char* buff = (char*)malloc(sizeof(char)*(length+1));
+	for(int i=0;i<length;i++){
+		memset(buff, 32, length);
+		recurBrute(buff, passwords, 0, i, length);
+	}
+	free(buff);
 }
 
 
