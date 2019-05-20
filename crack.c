@@ -100,8 +100,9 @@ void guess(char** fourLetter, char* guess, int length){
 	free(hashedGuess);
 }
 
-static void bruteForce(char** passwords, int maxlen){
-    int   alphaLen = ALPHABET_LENGTH;
+/* Code taken from https://github.com/Jsdemonsim/Stackoverflow/blob/master/alphabet/alphabet.c
+Generates brute force guesses and inserts into text file. */
+static void bruteForce(int maxlen, int alphaLen, int alphaOffset){
     int   len      = 0;
     char *buffer   = malloc((maxlen + 1) * alphaLen * alphaLen);
     int  *letters  = malloc(maxlen * sizeof(int));
@@ -127,7 +128,7 @@ static void bruteForce(char** passwords, int maxlen){
 		    int j = 0;
 		    bufLen = (len + 1) * alphaLen;
 		    for (i=0;i<alphaLen;i++) {
-				buffer[j++] = (char)(i+ALPHABET_OFFSET);
+				buffer[j++] = (char)(i+alphaOffset);
 				buffer[j++] = '\n';
 		    }
 		    //write(fd, buffer, bufLen);
@@ -136,7 +137,7 @@ static void bruteForce(char** passwords, int maxlen){
 		}
 
 		// Initialize buffer to contain all first letters.
-		memset(buffer, (char)(ALPHABET_OFFSET), bufLen);
+		memset(buffer, (char)(alphaOffset), bufLen);
 
 		// Now write all the last 2 letters and newlines, which
 		// will after this not change during the main algorithm.
@@ -145,8 +146,8 @@ static void bruteForce(char** passwords, int maxlen){
 		    int let0 = 0;
 		    int let1 = 0;
 		    for (i=len-2;i<bufLen;i+=stride) {
-			buffer[i]   = (char)(let0 + ALPHABET_OFFSET);
-			buffer[i+1] = (char)(let1 + ALPHABET_OFFSET);
+			buffer[i]   = (char)(let0 + alphaOffset);
+			buffer[i+1] = (char)(let1 + alphaOffset);
 			let1++;
 			buffer[i+2] = '\n';
 			if (let1 == alphaLen) {
@@ -186,7 +187,7 @@ static void bruteForce(char** passwords, int maxlen){
 			letters[i] = 0;
 
 		    // Set this letter in the proper places in the buffer.
-		    c = (char)(letters[i]+ALPHABET_OFFSET);
+		    c = (char)(letters[i]+alphaOffset);
 		    for (j=i;j<bufLen;j+=stride)
 			buffer[j] = c;
 
@@ -312,8 +313,10 @@ int main(int argc, char* argv[]){
     guessNumbers(sixLetter, 6);
 	checkFilePasswords("common_passwords.txt", fourLetter, 4);
 	checkFilePasswords("common_passwords.txt", sixLetter, 6);
-	checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
-	//bruteForce(fourLetter, 4);
+	//checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
+	bruteForce(6, 25, 97);
+	checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
+	//bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
     //guessPasswords(sixLetter);
     return 0;
 }
