@@ -22,7 +22,7 @@
 #define NUM_SIX_LETTER 20
 
 void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop);
-void guess(char** passwords, char* guess, int length, bool stop);
+void guess(char** passwords, char* guess, int length);
 
 
 
@@ -86,7 +86,7 @@ void readPasswords(char* passwords[], char* filename){
 
 
 // Function finds all words 1 edit-distance away from a word.
-void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop){
+/*void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop){
 	if(stop){
 		return;
 	}
@@ -120,12 +120,12 @@ void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, b
 			guess(passwords, newWord, n, true);
 		}
 	}
-}
+}*/
 
 
 
 
-void guess(char** passwords, char* guess, int length, bool stop){
+void guess(char** passwords, char* guess, int length){
     char* hashedGuess = sha256S(guess);
 	int number;
 	int offset=0;
@@ -140,7 +140,6 @@ void guess(char** passwords, char* guess, int length, bool stop){
 	for(int i=0;i<number;i++){
         if(strcmp(passwords[i], hashedGuess)==0){
             printf("%s %d   %s\n", guess, i+offset, hashedGuess);
-			findAllEdits(passwords, guess, ALPHABET_LENGTH, ALPHABET_OFFSET, true);
         }
     }
 	free(hashedGuess);
@@ -149,9 +148,20 @@ void guess(char** passwords, char* guess, int length, bool stop){
 
 
 
-void checkBruteGuesses(char* buff){
-
-
+void checkBruteGuesses(char* buff, char** passwords, int length){
+	char c = buff[0];
+	int position = 0;
+	char* word = (char*)malloc(sizeof(char)*(length+1));
+	while(c != '\0'){
+		int i=0;
+		while(c != '\n'){
+			word[i] = buff[position];
+			i++;
+			position++;
+		}
+		word[i] = '\0';
+		guess(passwords, word, length);
+	}
 }
 
 
@@ -186,8 +196,8 @@ static void bruteForce(int maxlen, int alphaLen, int alphaOffset){
 				buffer[j++] = (char)(i+alphaOffset);
 				buffer[j++] = '\n';
 		    }
-		    //write(fd, buffer, bufLen);
-			fprintf(fp, "%s", buffer);
+		    checkBruteGuesses(buffer, passwords, maxLen);
+			//fprintf(fp, "%s", buffer);
 		    continue;
 		}
 
@@ -215,8 +225,8 @@ static void bruteForce(int maxlen, int alphaLen, int alphaOffset){
 		}
 
 		// Write the first sequence out.
-		//write(fd, buffer, bufLen);
-		fprintf(fp, "%s", buffer);
+		//fprintf(fp, "%s", buffer);
+		checkBruteGuesses(buffer, passwords, maxLen);
 
 		// Special case for length 2, we're already done.
 		if (len == 2){
@@ -249,8 +259,8 @@ static void bruteForce(int maxlen, int alphaLen, int alphaOffset){
 		    if (letters[i] != 0) {
 			// No wraparound, so we finally finished incrementing.
 			// Write out this set.  Reset i back to third to last letter.
-			//write(fd, buffer, bufLen);
-			fprintf(fp, "%s", buffer);
+			//fprintf(fp, "%s", buffer);
+			checkBruteGuesses(buffer, passwords, maxLen);
 			i = len - 3;
 			continue;
 		    }
@@ -285,7 +295,7 @@ void guessNumbers(char** passwords, int numDigits){
     char* word = (char*)malloc(sizeof(char)*(numDigits+1));
     for(int i=0;i<maxValue;i++){
         word = zeroPad(i, numDigits);
-        guess(passwords, word, numDigits, true);
+        guess(passwords, word, numDigits);
     }
 }
 
@@ -296,7 +306,7 @@ void changeLetter(char letter, char replacement, char* word, char** passwords, i
 	char* position = strstr(copy, &letter);
 	if(position){
 		position[0] = replacement;
-		guess(passwords, copy, length, false);
+		guess(passwords, copy, length);
 	}
 	free(copy);
 }
@@ -323,7 +333,7 @@ void upperCaseGuess(char* word, char** passwords, int length){
 	if(copy[0]>='a' && copy[0]<='z'){
 		copy[0] = copy[0] - 32;
 	}
-	guess(passwords, copy, length, false);
+	guess(passwords, copy, length);
 	free(copy);
 }
 
@@ -352,7 +362,7 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
-		guess(passwords, word, length, false);
+		guess(passwords, word, length);
 		//upperCaseGuess(word, passwords, length);
 		//alphabetToDigit(word, passwords, length);
 	}
