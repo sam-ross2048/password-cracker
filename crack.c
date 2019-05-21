@@ -347,7 +347,6 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 	FILE *fp;
 	fp = fopen(filename, "r");
 
-
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
 		guess(passwords, word, length);
@@ -358,7 +357,7 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 }
 
 int main(int argc, char* argv[]){
-
+	printf("%d\n", argc);
     char* fourLetter[findNumberPasswords(FOUR_LETTER_FILE)];
     char* sixLetter[findNumberPasswords(SIX_LETTER_FILE)];
     readPasswords(fourLetter, FOUR_LETTER_FILE);
