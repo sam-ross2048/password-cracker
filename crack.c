@@ -365,7 +365,7 @@ void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses)
 		printf("NUMGUESSES: %d  MAX: %d", *numGuesses, maxGuesses);
 		word[length] = '\0';
 		printf("%s\n", word);
-		*numGuesses++;
+		*numGuesses+=1;
 	}
 	fclose(fp);
 }
@@ -373,8 +373,10 @@ void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses)
 
 
 void generateGuesses(int maxGuesses, int length){
-	int numGuesses = 0;
-	fileGeneration(COMMON_FILE, length, maxGuesses, &numGuesses);
+	int* numGuesses = malloc(sizeof(int));
+	fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses);
+
+	free(numGuesses);
 }
 
 
