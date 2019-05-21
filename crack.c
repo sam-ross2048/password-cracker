@@ -100,6 +100,13 @@ void guess(char** fourLetter, char* guess, int length){
 	free(hashedGuess);
 }
 
+
+void checkBruteGuesses(char* buff){
+
+
+}
+
+
 /* Code taken from https://github.com/Jsdemonsim/Stackoverflow/blob/master/alphabet/alphabet.c
 Generates brute force guesses and inserts into text file. */
 static void bruteForce(int maxlen, int alphaLen, int alphaOffset){
@@ -272,6 +279,7 @@ void upperCaseGuess(char* word, char** passwords, int length){
 	free(copy);
 }
 
+
 bool readFilePassword(FILE* fp, char* word, int length){
 	int i=0;
 	bool end = false;
@@ -313,10 +321,11 @@ int main(int argc, char* argv[]){
     guessNumbers(sixLetter, 6);
 	checkFilePasswords("common_passwords.txt", fourLetter, 4);
 	checkFilePasswords("common_passwords.txt", sixLetter, 6);
-	//checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
+	bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
+	checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
 	bruteForce(6, 25, 97);
 	checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
-	//bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
+
     //guessPasswords(sixLetter);
     return 0;
 }
