@@ -371,10 +371,10 @@ void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses)
 		printf("%s\n", word);
 		*numGuesses+=1;
 	}*/
-	while(fgets(word, 9, fp)!=NULL){
+	while(fgets(word, 9, fp)!=NULL && *numGuesses < maxGuesses){
 		word[strcspn(word, "\r\n")] = '\0';
+		printf("%s\n", word);
 	}
-	printf("%s\n", word);
 	*numGuesses+=1;
 	fclose(fp);
 }
