@@ -306,17 +306,17 @@ void changeLetter(char letter, char replacement, char* word, char** passwords, i
 }
 
 
-void alphabetToDigit(char* word, char** passwords, int length){
-	changeLetter('i', '1', word, passwords, length);
-	changeLetter('l', '1', word, passwords, length);
-	changeLetter('a', '4', word, passwords, length);
-	changeLetter('o', '0', word, passwords, length);
-	changeLetter('I', '1', word, passwords, length);
-	changeLetter('A', '4', word, passwords, length);
-	changeLetter('O', '0', word, passwords, length);
-	changeLetter('L', '1', word, passwords, length);
-	changeLetter('s', '$', word, passwords, length);
-	changeLetter('S', '$', word, passwords, length);
+void alphabetToDigit(char* word, char** passwords, int length, int maxGuesses){
+	changeLetter('i', '1', word, passwords, length, maxGuesses);
+	changeLetter('l', '1', word, passwords, length, maxGuesses);
+	changeLetter('a', '4', word, passwords, length, maxGuesses);
+	changeLetter('o', '0', word, passwords, length, maxGuesses);
+	changeLetter('I', '1', word, passwords, length, maxGuesses);
+	changeLetter('A', '4', word, passwords, length, maxGuesses);
+	changeLetter('O', '0', word, passwords, length, maxGuesses);
+	changeLetter('L', '1', word, passwords, length, maxGuesses);
+	changeLetter('s', '$', word, passwords, length, maxGuesses);
+	changeLetter('S', '$', word, passwords, length, maxGuesses);
 }
 
 
