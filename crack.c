@@ -373,6 +373,7 @@ void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses)
 
 
 void generateGuesses(int maxGuesses, int length){
+	printf("HELLo\n");
 	int* numGuesses;
 	*numGuesses=0;
 	printf("Going into file generation\n");
@@ -399,6 +400,7 @@ int main(int argc, char* argv[]){
 
 	if(argc == 2){
 		int maxGuesses = atoi(argv[1]);
+		printf("HI\n");
 		generateGuesses(maxGuesses, 6);
 	}
 
