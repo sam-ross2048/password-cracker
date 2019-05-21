@@ -167,7 +167,7 @@ void checkBruteGuesses(char* buff, char** passwords, int length){
 
 /* Code taken from https://github.com/Jsdemonsim/Stackoverflow/blob/master/alphabet/alphabet.c
 Generates brute force guesses and inserts into text file. */
-static void bruteForce(int maxlen, int alphaLen, int alphaOffset){
+static void bruteForce(int maxlen, int alphaLen, int alphaOffset, char** passwords){
     int   len      = 0;
     char *buffer   = malloc((maxlen + 1) * alphaLen * alphaLen);
     int  *letters  = malloc(maxlen * sizeof(int));
@@ -379,9 +379,9 @@ int main(int argc, char* argv[]){
     guessNumbers(sixLetter, 6);
 	checkFilePasswords("common_passwords.txt", fourLetter, 4);
 	checkFilePasswords("common_passwords.txt", sixLetter, 6);
-	bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
+	bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET, fourLetter);
 	//checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
-	bruteForce(6, 25, 97);
+	bruteForce(6, 25, 97, sixLetter);
 	//checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
 
     //guessPasswords(sixLetter);
