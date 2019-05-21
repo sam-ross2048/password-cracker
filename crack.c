@@ -371,6 +371,7 @@ void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses)
 }
 
 
+
 void generateGuesses(int maxGuesses, int length){
 	int* numGuesses; int n = 0;
 	numGuesses=&n;
