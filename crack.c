@@ -21,8 +21,8 @@
 #define NUM_FOUR_LETTER 10
 #define NUM_SIX_LETTER 20
 
-//void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop);
-int guess(char** passwords, char* guess, int length, int maxGuesses);
+void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop);
+void guess(char** passwords, char* guess, int length);
 
 
 
@@ -126,11 +126,10 @@ void readPasswords(char* passwords[], char* filename){
 
 
 
-int guess(char** passwords, char* guess, int length, int maxGuesses){
+void guess(char** passwords, char* guess, int length){
     char* hashedGuess = sha256S(guess);
 	int number;
 	int offset=0;
-	static int numGuesses = 0;
 	if(length==4){
 		 number = NUM_FOUR_LETTER;
 	 }
@@ -145,11 +144,6 @@ int guess(char** passwords, char* guess, int length, int maxGuesses){
         }
     }
 	free(hashedGuess);
-	numGuesses++;
-	if(numGuesses >= maxGuesses){
-		return -1;
-	}
-	return 0;
 }
 
 
@@ -283,51 +277,51 @@ char* zeroPad(int number, int numDigits){
 }
 
 
-void guessNumbers(char** passwords, int numDigits, int maxGuesses){
+void guessNumbers(char** passwords, int numDigits){
     int maxValue = pow(10, numDigits);
     char* word = (char*)malloc(sizeof(char)*(numDigits+1));
     for(int i=0;i<maxValue;i++){
         word = zeroPad(i, numDigits);
-        guess(passwords, word, numDigits, maxGuesses);
+        guess(passwords, word, numDigits);
 		free(word);
     }
 }
 
 
-void changeLetter(char letter, char replacement, char* word, char** passwords, int length, int maxGuesses){
+void changeLetter(char letter, char replacement, char* word, char** passwords, int length){
 	char* copy = (char*)malloc(sizeof(char)*(length+1));
 	strcpy(copy, word);
 	char* position = strstr(copy, &letter);
 	if(position){
 		position[0] = replacement;
-		guess(passwords, copy, length, maxGuesses);
+		guess(passwords, copy, length);
 	}
 	free(copy);
 }
 
 
-void alphabetToDigit(char* word, char** passwords, int length, int maxGuesses){
-	changeLetter('i', '1', word, passwords, length, maxGuesses);
-	changeLetter('l', '1', word, passwords, length, maxGuesses);
-	changeLetter('a', '4', word, passwords, length, maxGuesses);
-	changeLetter('o', '0', word, passwords, length, maxGuesses);
-	changeLetter('I', '1', word, passwords, length, maxGuesses);
-	changeLetter('A', '4', word, passwords, length, maxGuesses);
-	changeLetter('O', '0', word, passwords, length, maxGuesses);
-	changeLetter('L', '1', word, passwords, length, maxGuesses);
-	changeLetter('s', '$', word, passwords, length, maxGuesses);
-	changeLetter('S', '$', word, passwords, length, maxGuesses);
+void alphabetToDigit(char* word, char** passwords, int length){
+	changeLetter('i', '1', word, passwords, length);
+	changeLetter('l', '1', word, passwords, length);
+	changeLetter('a', '4', word, passwords, length);
+	changeLetter('o', '0', word, passwords, length);
+	changeLetter('I', '1', word, passwords, length);
+	changeLetter('A', '4', word, passwords, length);
+	changeLetter('O', '0', word, passwords, length);
+	changeLetter('L', '1', word, passwords, length);
+	changeLetter('s', '$', word, passwords, length);
+	changeLetter('S', '$', word, passwords, length);
 }
 
 
 
-void upperCaseGuess(char* word, char** passwords, int length, int maxGuesses){
+void upperCaseGuess(char* word, char** passwords, int length){
 	char* copy = (char*)malloc(sizeof(char)*(length+1));
 	strcpy(copy, word);
 	if(copy[0]>='a' && copy[0]<='z'){
 		copy[0] = copy[0] - 32;
 	}
-	guess(passwords, copy, length, maxGuesses);
+	guess(passwords, copy, length);
 	free(copy);
 }
 
@@ -348,22 +342,18 @@ bool readFilePassword(FILE* fp, char* word, int length){
 }
 
 
-int checkFilePasswords(char* filename, char** passwords, int length, int maxGuesses){
+void checkFilePasswords(char* filename, char** passwords, int length){
 	char word[length+1];
 	FILE *fp;
 	fp = fopen(filename, "r");
-	int n;
+
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
-		n = guess(passwords, word, length, maxGuesses);
-		if(n < 0){
-			return -1;
-		}
+		guess(passwords, word, length);
 		//upperCaseGuess(word, passwords, length);
 		//alphabetToDigit(word, passwords, length);
 	}
 	fclose(fp);
-	return 0;
 }
 
 int main(int argc, char* argv[]){
@@ -373,26 +363,23 @@ int main(int argc, char* argv[]){
 	    char* sixLetter[findNumberPasswords(SIX_LETTER_FILE)];
 	    readPasswords(fourLetter, FOUR_LETTER_FILE);
 	    readPasswords(sixLetter, SIX_LETTER_FILE);
-	    //guessNumbers(fourLetter, 4);
-	    //guessNumbers(sixLetter, 6);
-		//checkFilePasswords("common_passwords.txt", fourLetter, 4);
-		//checkFilePasswords("common_passwords.txt", sixLetter, 6);
-		//bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
-		//checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
-		//bruteForce(6, 25, 97);
-		//checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
+	    guessNumbers(fourLetter, 4);
+	    guessNumbers(sixLetter, 6);
+		checkFilePasswords("common_passwords.txt", fourLetter, 4);
+		checkFilePasswords("common_passwords.txt", sixLetter, 6);
+		bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
+		checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
+		bruteForce(6, 25, 97);
+		checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
 	}
 
-	if(argc == 2){
-		int maxGuesses = atoi(argv[1]);
-		char* passwords[findNumberPasswords(SIX_LETTER_FILE)];
+	/*if(argc == 2){
+		int numGuesses = atoi(argv[1]);
+		char* passwords[findNumberPasswords];
 		readPasswords(passwords, SIX_LETTER_FILE);
-		int* totalGuesses;
-		*totalGuesses=0;
-		checkFilePasswords("common_passwords.txt", passwords, 6, maxGuesses);
+		checkFilePasswords("common_passwords.txt", passwords, 6, numGuesses);
 		bruteForce(4, 25, 97);
-		checkFilePasswords("bruteGenerated.txt", passwords, 6, maxGuesses);
-	}
+	}*/
 
 
 
