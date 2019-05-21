@@ -394,7 +394,9 @@ int main(int argc, char* argv[]){
 	}
 
 	if(argc == 2){
+		printf("WHERE\n");
 		int maxGuesses = atoi(argv[1]);
+		printf("HERE\n");
 		generateGuesses(maxGuesses, 6);
 	}
 
