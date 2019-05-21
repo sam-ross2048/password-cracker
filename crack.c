@@ -21,6 +21,11 @@
 #define NUM_FOUR_LETTER 10
 #define NUM_SIX_LETTER 20
 
+void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, boolean stop);
+
+
+
+
 /* Function to convert bytes to hexadecimal string. Code written by Brad Conte
     found from same source code as sha256.c and sha256.h */
 char *sha256_byteToHexString(BYTE data[]) {
