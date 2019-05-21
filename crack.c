@@ -396,7 +396,7 @@ int main(int argc, char* argv[]){
 
 	if(argc == 2){
 		int maxGuesses = atoi(argv[1]);
-		printf("%s\n", maxGuesses)
+		printf("%d\n", maxGuesses);
 		generateGuesses(maxGuesses, 6);
 	}
 
