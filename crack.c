@@ -14,6 +14,7 @@
 
 #define FOUR_LETTER_FILE "pwd4sha256"
 #define SIX_LETTER_FILE "pwd6sha256"
+#define COMMON_FILE "common_passwords.txt"
 
 #define ALPHABET_LENGTH 94
 #define ALPHABET_OFFSET 32
@@ -356,6 +357,25 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 	fclose(fp);
 }
 
+
+void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses){
+	char word[length+1];
+	FILE* fp = fopen(filename, "r");
+	while(readFilePassword(fp, word, length)!=true && numGuesses < maxGuesses){
+		word[length] = '\0';
+		printf("%s\n", word);
+		*numGuesses++;
+	}
+}
+
+
+void generateGuesses(int maxGuesses, int length){
+	int* numGuesses;
+	*numGuesses=0;
+	fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses);
+}
+
+
 int main(int argc, char* argv[]){
 
 	if(argc == 1){
@@ -365,21 +385,18 @@ int main(int argc, char* argv[]){
 	    readPasswords(sixLetter, SIX_LETTER_FILE);
 	    guessNumbers(fourLetter, 4);
 	    guessNumbers(sixLetter, 6);
-		checkFilePasswords("common_passwords.txt", fourLetter, 4);
-		checkFilePasswords("common_passwords.txt", sixLetter, 6);
+		checkFilePasswords(COMMON_FILE, fourLetter, 4);
+		checkFilePasswords(COMMON_FILE, sixLetter, 6);
 		bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
 		checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
 		bruteForce(6, 25, 97);
 		checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
 	}
 
-	/*if(argc == 2){
-		int numGuesses = atoi(argv[1]);
-		char* passwords[findNumberPasswords];
-		readPasswords(passwords, SIX_LETTER_FILE);
-		checkFilePasswords("common_passwords.txt", passwords, 6, numGuesses);
-		bruteForce(4, 25, 97);
-	}*/
+	if(argc == 2){
+		maxGuesses = atoi(argv[1]);
+		generateGuesses(maxGuesses);
+	}
 
 
 
