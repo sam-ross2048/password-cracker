@@ -375,6 +375,7 @@ void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses)
 		word[strcspn(word, "\r\n")] = '\0';
 		printf("%s\n", word);
 	}
+	
 	*numGuesses+=1;
 	fclose(fp);
 }
