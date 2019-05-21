@@ -81,23 +81,15 @@ void readPasswords(char* passwords[], char* filename){
 
 
 // Function finds all words 1 edit-distance away from a word.
-void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset){
+void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, boolean stop){
+	if(stop){
+		return;
+	}
 	char alphabet[] = "abcdefghijklmnopqrstuvwxyz\0";
 	int n = strlen(word);
 	int i, j;
 	char* newWord = (char*)malloc(sizeof(char)*(n+1));
 	strcpy(newWord, word);
-
-	// Finds all deletions and adds to edits.
-	for(i=0;i<n;i++){
-		newWord = (char*)malloc(sizeof(char)*(n+1));
-		strcpy(newWord, word);
-		for(j=i;j<n;j++){
-			newWord[j] = newWord[j+1];
-		}
-		guess(passwords, newWord, n);
-		free(newWord);
-	}
 
 	// Finds all substitutions and adds to edits.
 	for(i=0;i<n;i++){
@@ -105,7 +97,7 @@ void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset){
 			newWord = (char*)malloc(sizeof(char)*(n+1));
 			strcpy(newWord, word);
 			new_word[i] = (char)(i+alphaOffset);
-			guess(passwords, newWord, n);
+			guess(passwords, newWord, n, true);
 			free(newWord);
 		}
 	}
@@ -120,7 +112,7 @@ void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset){
 				newWord[z] = newWord[z-1];
 			}
 			newWord[i] = (char)(i+alphaOffset);//alphabet[j];
-			guess(passwords, newWord, n);
+			guess(passwords, newWord, n, true);
 		}
 	}
 }
@@ -128,7 +120,7 @@ void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset){
 
 
 
-void guess(char** passwords, char* guess, int length){
+void guess(char** passwords, char* guess, int length, bool stop){
     char* hashedGuess = sha256S(guess);
 	int number;
 	int offset=0;
@@ -288,7 +280,7 @@ void guessNumbers(char** passwords, int numDigits){
     char* word = (char*)malloc(sizeof(char)*(numDigits+1));
     for(int i=0;i<maxValue;i++){
         word = zeroPad(i, numDigits);
-        guess(passwords, word, numDigits);
+        guess(passwords, word, numDigits, true);
     }
 }
 
@@ -299,7 +291,7 @@ void changeLetter(char letter, char replacement, char* word, char** passwords, i
 	char* position = strstr(copy, &letter);
 	if(position){
 		position[0] = replacement;
-		guess(passwords, copy, length);
+		guess(passwords, copy, length, false);
 	}
 	free(copy);
 }
@@ -326,7 +318,7 @@ void upperCaseGuess(char* word, char** passwords, int length){
 	if(copy[0]>='a' && copy[0]<='z'){
 		copy[0] = copy[0] - 32;
 	}
-	guess(passwords, copy, length);
+	guess(passwords, copy, length, false);
 	free(copy);
 }
 
@@ -355,7 +347,7 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
-		guess(passwords, word, length);
+		guess(passwords, word, length, false);
 		//upperCaseGuess(word, passwords, length);
 		//alphabetToDigit(word, passwords, length);
 	}
