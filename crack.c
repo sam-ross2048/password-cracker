@@ -362,7 +362,6 @@ void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses)
 	char word[length+1];
 	FILE* fp = fopen(filename, "r");
 	while(readFilePassword(fp, word, length)!=true && *numGuesses < maxGuesses){
-		printf("NUMGUESSES: %d  MAX: %d\n", *numGuesses, maxGuesses);
 		word[length] = '\0';
 		printf("%s\n", word);
 		*numGuesses+=1;
