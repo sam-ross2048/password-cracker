@@ -60,6 +60,7 @@ void readSinglePassword(char* dump, FILE* fp){
     for(int i=0;i<HASH_LENGTH;i++){
         sprintf(dump+(i*2), "%02x", buff[i]);
     }
+	free(buff);
 }
 
 int findNumberPasswords(char* fileName){
@@ -277,6 +278,7 @@ void guessNumbers(char** passwords, int numDigits){
     for(int i=0;i<maxValue;i++){
         word = zeroPad(i, numDigits);
         guess(passwords, word, numDigits);
+		free(word);
     }
 }
 
