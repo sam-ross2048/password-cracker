@@ -360,12 +360,15 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 
 void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses){
 	char word[length+1];
+	printf("Open file\n");
 	FILE* fp = fopen(filename, "r");
 	while(readFilePassword(fp, word, length)!=true && *numGuesses < maxGuesses){
+		printf("WHERE?\n");
 		word[length] = '\0';
 		printf("%s\n", word);
 		*numGuesses++;
 	}
+	fclose(fp);
 }
 
 
@@ -394,9 +397,7 @@ int main(int argc, char* argv[]){
 	}
 
 	if(argc == 2){
-		printf("WHERE\n");
 		int maxGuesses = atoi(argv[1]);
-		printf("HERE\n");
 		generateGuesses(maxGuesses, 6);
 	}
 
