@@ -373,14 +373,14 @@ int main(int argc, char* argv[]){
 	    char* sixLetter[findNumberPasswords(SIX_LETTER_FILE)];
 	    readPasswords(fourLetter, FOUR_LETTER_FILE);
 	    readPasswords(sixLetter, SIX_LETTER_FILE);
-	    guessNumbers(fourLetter, 4);
-	    guessNumbers(sixLetter, 6);
-		checkFilePasswords("common_passwords.txt", fourLetter, 4);
-		checkFilePasswords("common_passwords.txt", sixLetter, 6);
-		bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
-		checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
-		bruteForce(6, 25, 97);
-		checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
+	    //guessNumbers(fourLetter, 4);
+	    //guessNumbers(sixLetter, 6);
+		//checkFilePasswords("common_passwords.txt", fourLetter, 4);
+		//checkFilePasswords("common_passwords.txt", sixLetter, 6);
+		//bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
+		//checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
+		//bruteForce(6, 25, 97);
+		//checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
 	}
 
 	if(argc == 2){
@@ -390,7 +390,7 @@ int main(int argc, char* argv[]){
 		int* totalGuesses;
 		*totalGuesses=0;
 		checkFilePasswords("common_passwords.txt", passwords, 6, maxGuesses);
-		bruteForce(4, 25, 97, maxGuesses);
+		bruteForce(4, 25, 97);
 		checkFilePasswords("bruteGenerated.txt", passwords, 6, maxGuesses);
 	}
 
