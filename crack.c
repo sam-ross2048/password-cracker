@@ -80,7 +80,7 @@ void readPasswords(char* passwords[], char* filename){
 }
 
 
-void guess(char** fourLetter, char* guess, int length){
+void guess(char** passwords, char* guess, int length){
     char* hashedGuess = sha256S(guess);
 	int number;
 	int offset=0;
@@ -93,11 +93,58 @@ void guess(char** fourLetter, char* guess, int length){
 	}
 
 	for(int i=0;i<number;i++){
-        if(strcmp(fourLetter[i], hashedGuess)==0){
+        if(strcmp(passwords[i], hashedGuess)==0){
             printf("%s %d   %s\n", guess, i+offset, hashedGuess);
+			findAllEdits(passwords, guess, ALPHABET_LENGTH, ALPHABET_OFFSET);
         }
     }
 	free(hashedGuess);
+}
+
+
+// Function finds all words 1 edit-distance away from a word.
+void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset){
+	char alphabet[] = "abcdefghijklmnopqrstuvwxyz\0";
+	int n = strlen(word);
+	int i, j;
+	char* new_word = (char*)malloc(sizeof(char)*(n+1));
+	strcpy(new_word, word);
+
+	// Finds all deletions and adds to edits.
+	for(i=0;i<n;i++){
+		newWord = (char*)malloc(sizeof(char)*(n+1));
+		strcpy(newWord, word);
+		for(j=i;j<n;j++){
+			newWord[j] = newWord[j+1];
+		}
+		guess(passwords, newWord, n);
+		free(newWord);
+	}
+
+	// Finds all substitutions and adds to edits.
+	for(i=0;i<n;i++){
+		for(j=0;j<alphaLen;j++){
+			newWord = (char*)malloc(sizeof(char)*(n+1));
+			strcpy(newWord, word);
+			new_word[i] = (char)(i+alphaOffset);
+			guess(passwords, newWord, n);
+			free(newWord);
+		}
+	}
+
+	// Finds all insertions and adds to edits.
+	int z;
+	for(i=0;i<=n;i++){
+		for(j=0;j<alphaLen;j++){
+			newWord = (char*)malloc(sizeof(char)*(n+2));
+			strcpy(newWord, word);
+			for(z=n+1;z>i;z--){
+				newWord[z] = newWord[z-1];
+			}
+			newWord[i] = (char)(i+alphaOffset);//alphabet[j];
+			guess(passwords, newWord, n);
+		}
+	}
 }
 
 
