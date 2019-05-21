@@ -396,9 +396,8 @@ int main(int argc, char* argv[]){
 		checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
 	}
 
-	if(argc == 2){
+	else if(argc == 2){
 		int maxGuesses = atoi(argv[1]);
-		printf("%d\n", maxGuesses);
 		generateGuesses(maxGuesses, 6);
 	}
 
