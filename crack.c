@@ -162,6 +162,7 @@ void checkBruteGuesses(char* buff, char** passwords, int length){
 		word[i] = '\0';
 		guess(passwords, word, length);
 	}
+	free(word);
 }
 
 
