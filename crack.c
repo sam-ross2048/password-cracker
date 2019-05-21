@@ -374,8 +374,8 @@ void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses)
 
 void generateGuesses(int maxGuesses, int length){
 	printf("HELLo\n");
-	int* numGuesses;
-	*numGuesses=0;
+	int* numGuesses; int n = 0;
+	numGuesses=&n;
 	printf("Going into file generation\n");
 	fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses);
 }
