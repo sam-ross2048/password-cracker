@@ -196,7 +196,7 @@ static void bruteForce(int maxlen, int alphaLen, int alphaOffset, char** passwor
 				buffer[j++] = (char)(i+alphaOffset);
 				buffer[j++] = '\n';
 		    }
-		    checkBruteGuesses(buffer, passwords, maxLen);
+		    checkBruteGuesses(buffer, passwords, maxlen);
 			//fprintf(fp, "%s", buffer);
 		    continue;
 		}
@@ -226,7 +226,7 @@ static void bruteForce(int maxlen, int alphaLen, int alphaOffset, char** passwor
 
 		// Write the first sequence out.
 		//fprintf(fp, "%s", buffer);
-		checkBruteGuesses(buffer, passwords, maxLen);
+		checkBruteGuesses(buffer, passwords, maxlen);
 
 		// Special case for length 2, we're already done.
 		if (len == 2){
@@ -260,7 +260,7 @@ static void bruteForce(int maxlen, int alphaLen, int alphaOffset, char** passwor
 			// No wraparound, so we finally finished incrementing.
 			// Write out this set.  Reset i back to third to last letter.
 			//fprintf(fp, "%s", buffer);
-			checkBruteGuesses(buffer, passwords, maxLen);
+			checkBruteGuesses(buffer, passwords, maxlen);
 			i = len - 3;
 			continue;
 		    }
