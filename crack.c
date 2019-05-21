@@ -380,9 +380,9 @@ int main(int argc, char* argv[]){
 	checkFilePasswords("common_passwords.txt", fourLetter, 4);
 	checkFilePasswords("common_passwords.txt", sixLetter, 6);
 	bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
-	checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
+	//checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
 	bruteForce(6, 25, 97);
-	checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
+	//checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
 
     //guessPasswords(sixLetter);
     return 0;
