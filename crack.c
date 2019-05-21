@@ -21,7 +21,7 @@
 #define NUM_FOUR_LETTER 10
 #define NUM_SIX_LETTER 20
 
-void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, boolean stop);
+void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop);
 
 
 
@@ -86,7 +86,7 @@ void readPasswords(char* passwords[], char* filename){
 
 
 // Function finds all words 1 edit-distance away from a word.
-void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, boolean stop){
+void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop){
 	if(stop){
 		return;
 	}
