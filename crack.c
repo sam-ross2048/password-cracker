@@ -321,13 +321,13 @@ void alphabetToDigit(char* word, char** passwords, int length){
 
 
 
-void upperCaseGuess(char* word, char** passwords, int length){
+void upperCaseGuess(char* word, char** passwords, int length, int maxGuesses){
 	char* copy = (char*)malloc(sizeof(char)*(length+1));
 	strcpy(copy, word);
 	if(copy[0]>='a' && copy[0]<='z'){
 		copy[0] = copy[0] - 32;
 	}
-	guess(passwords, copy, length);
+	guess(passwords, copy, length, maxGuesses);
 	free(copy);
 }
 
