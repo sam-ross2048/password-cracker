@@ -267,11 +267,12 @@ static void bruteForce(int maxlen, int alphaLen, int alphaOffset){
 
 char* zeroPad(int number, int numDigits){
     char* guess = (char*)malloc(sizeof(char)*(numDigits+1));
-
-	char* format = (char*)malloc(sizeof(char)*(4));
-	format = "%0";
-	sprintf(format, "%d", numDigits);
-	sprintf(guess, format, number);
+	if(numDigits==4){
+		sprintf(guess, "%04d", number);
+	}
+	else{
+		sprintf(guess, "%06d", number);
+	}
     return guess;
 }
 
