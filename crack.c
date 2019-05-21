@@ -126,10 +126,11 @@ void readPasswords(char* passwords[], char* filename){
 
 
 
-void guess(char** passwords, char* guess, int length){
+int guess(char** passwords, char* guess, int length, int maxGuesses){
     char* hashedGuess = sha256S(guess);
 	int number;
 	int offset=0;
+	static int numGuesses = 0;
 	if(length==4){
 		 number = NUM_FOUR_LETTER;
 	 }
@@ -144,6 +145,11 @@ void guess(char** passwords, char* guess, int length){
         }
     }
 	free(hashedGuess);
+	numGuesses++;
+	if(numGuesses >= maxGuesses){
+		return -1;
+	}
+	return 0;
 }
 
 
@@ -342,34 +348,53 @@ bool readFilePassword(FILE* fp, char* word, int length){
 }
 
 
-void checkFilePasswords(char* filename, char** passwords, int length){
+int checkFilePasswords(char* filename, char** passwords, int length, int maxGuesses){
 	char word[length+1];
 	FILE *fp;
 	fp = fopen(filename, "r");
-
+	int n;
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
-		guess(passwords, word, length);
+		n = guess(passwords, word, length, maxGuesses);
+		if(n < 0){
+			return -1;
+		}
 		//upperCaseGuess(word, passwords, length);
 		//alphabetToDigit(word, passwords, length);
 	}
 	fclose(fp);
+	return 0;
 }
 
 int main(int argc, char* argv[]){
-	printf("%d\n", argc);
-    char* fourLetter[findNumberPasswords(FOUR_LETTER_FILE)];
-    char* sixLetter[findNumberPasswords(SIX_LETTER_FILE)];
-    readPasswords(fourLetter, FOUR_LETTER_FILE);
-    readPasswords(sixLetter, SIX_LETTER_FILE);
-    guessNumbers(fourLetter, 4);
-    guessNumbers(sixLetter, 6);
-	checkFilePasswords("common_passwords.txt", fourLetter, 4);
-	checkFilePasswords("common_passwords.txt", sixLetter, 6);
-	bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
-	checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
-	bruteForce(6, 25, 97);
-	checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
+
+	if(argc == 1){
+		char* fourLetter[findNumberPasswords(FOUR_LETTER_FILE)];
+	    char* sixLetter[findNumberPasswords(SIX_LETTER_FILE)];
+	    readPasswords(fourLetter, FOUR_LETTER_FILE);
+	    readPasswords(sixLetter, SIX_LETTER_FILE);
+	    guessNumbers(fourLetter, 4);
+	    guessNumbers(sixLetter, 6);
+		checkFilePasswords("common_passwords.txt", fourLetter, 4);
+		checkFilePasswords("common_passwords.txt", sixLetter, 6);
+		bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
+		checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
+		bruteForce(6, 25, 97);
+		checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
+	}
+
+	if(argc == 2){
+		int maxGuesses = atoi(argv[1]);
+		char* passwords[findNumberPasswords];
+		readPasswords(passwords, SIX_LETTER_FILE);
+		int* totalGuesses;
+		*totalGuesses=0;
+		checkFilePasswords("common_passwords.txt", passwords, 6, maxGuesses);
+		bruteForce(4, 25, 97, maxGuesses);
+		checkFilePasswords("bruteGenerated.txt", passwords, 6, maxGuesses);
+	}
+
+
 
     //guessPasswords(sixLetter);
     return 0;
