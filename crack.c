@@ -138,10 +138,10 @@ int guess(char** passwords, char* guess, int length, int maxGuesses){
 		number = NUM_SIX_LETTER;
 		offset = NUM_FOUR_LETTER;
 	}
-	printf("%s\n", guess);
+
 	for(int i=0;i<number;i++){
         if(strcmp(passwords[i], hashedGuess)==0){
-            //printf("%s %d   %s\n", guess, i+offset, hashedGuess);
+            printf("%s %d   %s\n", guess, i+offset, hashedGuess);
         }
     }
 	free(hashedGuess);
