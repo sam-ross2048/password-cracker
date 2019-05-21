@@ -21,8 +21,8 @@
 #define NUM_FOUR_LETTER 10
 #define NUM_SIX_LETTER 20
 
-void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop);
-void guess(char** passwords, char* guess, int length, int maxGuesses);
+//void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop);
+int guess(char** passwords, char* guess, int length, int maxGuesses);
 
 
 
