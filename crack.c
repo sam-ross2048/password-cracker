@@ -342,7 +342,8 @@ bool readFilePassword(FILE* fp, char* word, int length){
 	for(i;i<length;i++){
 		word[i] = ' ';
 	}
-	word[i] = '\0';
+	word[strcspn(word, "\r\n")] = '\0';
+	//word[i] = '\0';
 
 	return end;
 }
@@ -366,15 +367,16 @@ void checkFilePasswords(char* filename, char** passwords, int length){
 void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses){
 	char word[length+1];
 	FILE* fp = fopen(filename, "r");
-	/*while(readFilePassword(fp, word, length)!=true && *numGuesses < maxGuesses){
+	while(readFilePassword(fp, word, length)!=true && *numGuesses < maxGuesses){
 		word[length] = '\0';
 		printf("%s\n", word);
 		*numGuesses+=1;
-	}*/
-	while(fgets(word, length+1, fp)!=NULL && *numGuesses < maxGuesses){
-		word[strcspn(word, "\r\n")] = '\0';
-		printf("%s\n", word);
 	}
+	/*while(fgets(word, length+1, fp)!=NULL && *numGuesses < maxGuesses){
+		word[strcspn(word, "\r\n")] = '\0';
+
+		printf("%s\n", word);
+	}*/
 
 	*numGuesses+=1;
 	fclose(fp);
