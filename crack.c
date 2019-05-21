@@ -152,8 +152,9 @@ void checkBruteGuesses(char* buff, char** passwords, int length){
 	char c = buff[0];
 	int position = 0;
 	char* word = (char*)malloc(sizeof(char)*(length+1));
+	int i;
 	while(c != '\0'){
-		int i=0;
+		i=0;
 		while(c != '\n'){
 			word[i] = buff[position];
 			i++;
