@@ -101,7 +101,7 @@ void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, b
 		for(j=0;j<alphaLen;j++){
 			newWord = (char*)malloc(sizeof(char)*(n+1));
 			strcpy(newWord, word);
-			new_word[i] = (char)(i+alphaOffset);
+			newWord[i] = (char)(i+alphaOffset);
 			guess(passwords, newWord, n, true);
 			free(newWord);
 		}
@@ -140,7 +140,7 @@ void guess(char** passwords, char* guess, int length, bool stop){
 	for(int i=0;i<number;i++){
         if(strcmp(passwords[i], hashedGuess)==0){
             printf("%s %d   %s\n", guess, i+offset, hashedGuess);
-			findAllEdits(passwords, guess, ALPHABET_LENGTH, ALPHABET_OFFSET);
+			findAllEdits(passwords, guess, ALPHABET_LENGTH, ALPHABET_OFFSET, true);
         }
     }
 	free(hashedGuess);
