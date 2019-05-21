@@ -80,35 +80,13 @@ void readPasswords(char* passwords[], char* filename){
 }
 
 
-void guess(char** passwords, char* guess, int length){
-    char* hashedGuess = sha256S(guess);
-	int number;
-	int offset=0;
-	if(length==4){
-		 number = NUM_FOUR_LETTER;
-	 }
-	else {
-		number = NUM_SIX_LETTER;
-		offset = NUM_FOUR_LETTER;
-	}
-
-	for(int i=0;i<number;i++){
-        if(strcmp(passwords[i], hashedGuess)==0){
-            printf("%s %d   %s\n", guess, i+offset, hashedGuess);
-			findAllEdits(passwords, guess, ALPHABET_LENGTH, ALPHABET_OFFSET);
-        }
-    }
-	free(hashedGuess);
-}
-
-
 // Function finds all words 1 edit-distance away from a word.
 void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset){
 	char alphabet[] = "abcdefghijklmnopqrstuvwxyz\0";
 	int n = strlen(word);
 	int i, j;
-	char* new_word = (char*)malloc(sizeof(char)*(n+1));
-	strcpy(new_word, word);
+	char* newWord = (char*)malloc(sizeof(char)*(n+1));
+	strcpy(newWord, word);
 
 	// Finds all deletions and adds to edits.
 	for(i=0;i<n;i++){
@@ -146,6 +124,32 @@ void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset){
 		}
 	}
 }
+
+
+
+
+void guess(char** passwords, char* guess, int length){
+    char* hashedGuess = sha256S(guess);
+	int number;
+	int offset=0;
+	if(length==4){
+		 number = NUM_FOUR_LETTER;
+	 }
+	else {
+		number = NUM_SIX_LETTER;
+		offset = NUM_FOUR_LETTER;
+	}
+
+	for(int i=0;i<number;i++){
+        if(strcmp(passwords[i], hashedGuess)==0){
+            printf("%s %d   %s\n", guess, i+offset, hashedGuess);
+			findAllEdits(passwords, guess, ALPHABET_LENGTH, ALPHABET_OFFSET);
+        }
+    }
+	free(hashedGuess);
+}
+
+
 
 
 void checkBruteGuesses(char* buff){
