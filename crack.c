@@ -22,7 +22,7 @@
 #define NUM_SIX_LETTER 20
 
 void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop);
-void guess(char** passwords, char* guess, int length);
+void guess(char** passwords, char* guess, int length, int maxGuesses);
 
 
 
@@ -283,24 +283,24 @@ char* zeroPad(int number, int numDigits){
 }
 
 
-void guessNumbers(char** passwords, int numDigits){
+void guessNumbers(char** passwords, int numDigits, int maxGuesses){
     int maxValue = pow(10, numDigits);
     char* word = (char*)malloc(sizeof(char)*(numDigits+1));
     for(int i=0;i<maxValue;i++){
         word = zeroPad(i, numDigits);
-        guess(passwords, word, numDigits);
+        guess(passwords, word, numDigits, maxGuesses);
 		free(word);
     }
 }
 
 
-void changeLetter(char letter, char replacement, char* word, char** passwords, int length){
+void changeLetter(char letter, char replacement, char* word, char** passwords, int length, int maxGuesses){
 	char* copy = (char*)malloc(sizeof(char)*(length+1));
 	strcpy(copy, word);
 	char* position = strstr(copy, &letter);
 	if(position){
 		position[0] = replacement;
-		guess(passwords, copy, length);
+		guess(passwords, copy, length, maxGuesses);
 	}
 	free(copy);
 }
