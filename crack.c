@@ -150,8 +150,8 @@ void guess(char** passwords, char* guess, int length){
 
 void readBruteForce(int maxlen, char* buff, int* numGuesses, int maxGuesses){
 
-	for(int i=0;buff[i]!='\0' && ;i++){
-		for(char c=getc(fp);(c!='\n' || i==length-1)&&*numGuesses<maxGuesses;c=getc(fp)){
+	for(int i=0;buff[i]!='\0' && *numGuesses<maxGuesses;;){
+		for(char c=buff[i];c!='\n' || i==length-1;c=buff[i]){
 			word[i] = c;
 			i++;
 			if(c==EOF){
@@ -159,11 +159,12 @@ void readBruteForce(int maxlen, char* buff, int* numGuesses, int maxGuesses){
 				break;
 			}
 		}
-		for(i;i<length;i++){
-			word[i] = ' ';
+		for(int j=i;j<length;j++){
+			word[j] = ' ';
 		}
 		word[strcspn(word, "\r\n")] = '\0';
 		printf("%s\n", word);
+		*numGuesses+=1;
 	}
 }
 
