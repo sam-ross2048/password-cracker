@@ -227,7 +227,8 @@ static void bruteForce(int maxlen, int alphaLen, int alphaOffset, int* numGuesse
 
 		// Write the first sequence out.
 		//write(fd, buffer, bufLen);
-		fprintf(fp, "%s", buffer);
+		readBruteForce(maxlen, buffer, numGuesses, maxGuesses);
+		//fprintf(fp, "%s", buffer);
 
 		// Special case for length 2, we're already done.
 		if (len == 2){
