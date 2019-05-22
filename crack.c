@@ -375,10 +375,10 @@ void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses)
 
 
 void numberGeneration(int length, int maxGuesses, int* numGuesses){
-	int maxValue = pow(10, numDigits);
-    char* word = (char*)malloc(sizeof(char)*(numDigits+1));
+	int maxValue = pow(10, length);
+    char* word = (char*)malloc(sizeof(char)*(length+1));
     for(int i=0;i<maxValue && *numGuesses < maxGuesses;i++){
-        word = zeroPad(i, numDigits);
+        word = zeroPad(i, length);
         printf("%s\n", word);
 		free(word);
     }
