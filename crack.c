@@ -101,6 +101,7 @@ void guess(char** passwords, char* guess, int length){
     char* hashedGuess = sha256S(guess);
 	int number = sizeof(passwords)/sizeof(passwords[0]);
 	int offset=0;
+	printf("%d\n", number);
 	if(length==4){
 		 number = NUM_FOUR_LETTER;
 	 }
