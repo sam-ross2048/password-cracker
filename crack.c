@@ -110,7 +110,7 @@ void guess(char** passwords, char* guess, int length){
 
 	for(int i=0;i<number;i++){
         if(strcmp(passwords[i], hashedGuess)==0){
-            printf("%s %d\n", guess, i+1+offset, hashedGuess);
+            printf("%s %d\n", guess, i+1+offset);
         }
     }
 	free(hashedGuess);
