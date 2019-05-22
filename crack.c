@@ -333,7 +333,7 @@ void guessArg2(char** hashes, char* password, int numHashes){
 
 	for(int i=0;i<numHashes;i++){
         if(strcmp(hashes[i], hashedGuess)==0){
-            printf("%s %d   %s\n", password, i, hashedGuess);
+            printf("%s %d\n", password, i, hashedGuess);
         }
     }
 	free(hashedGuess);
