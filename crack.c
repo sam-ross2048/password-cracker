@@ -389,8 +389,8 @@ void numberGeneration(int length, int maxGuesses, int* numGuesses){
 
 void generateGuesses(int maxGuesses, int length){
 	int* numGuesses = malloc(sizeof(int));
-	//fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses);
-	//numberGeneration(length, maxGuesses, numGuesses); // IMPLEMENT THIS FUNCTION
+	fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses);
+	numberGeneration(length, maxGuesses, numGuesses); // IMPLEMENT THIS FUNCTION
 	bruteForce(6, 25, 97);
 	fileGeneration(BRUTE_FILE, length, maxGuesses, numGuesses);
 	free(numGuesses);
@@ -417,6 +417,13 @@ int main(int argc, char* argv[]){
 	else if(argc == 2){
 		int maxGuesses = atoi(argv[1]);
 		generateGuesses(maxGuesses, 6);
+	}
+
+	else if(argc == 3){
+		char* passwordFile = argv[1];
+		char* hashFile = argv[2];
+		char* hashes[findNumberPasswords(hashFile)];
+		printf("%d\n", findNumberPasswords(hashFile));
 	}
 
 
