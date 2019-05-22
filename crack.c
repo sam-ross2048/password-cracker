@@ -11,6 +11,7 @@
 #define NUM_HASHES 30
 #define HASH_LENGTH 32
 #define HASH_SIZE 65
+#define MAX_PASSWORD_LEN 10000
 
 #define FOUR_LETTER_FILE "pwd4sha256"
 #define SIX_LETTER_FILE "pwd6sha256"
@@ -98,16 +99,15 @@ void readPasswords(char* passwords[], char* filename){
 
 void guess(char** passwords, char* guess, int length){
     char* hashedGuess = sha256S(guess);
-	int number;
+	int number = sizeof(passwords)/sizeof(passwords[0]);
 	int offset=0;
 	if(length==4){
 		 number = NUM_FOUR_LETTER;
 	 }
-	else {
+	else if(length==6){
 		number = NUM_SIX_LETTER;
 		offset = NUM_FOUR_LETTER-1;
 	}
-
 	for(int i=0;i<number;i++){
         if(strcmp(passwords[i], hashedGuess)==0){
             printf("%s %d\n", guess, i+1+offset);
@@ -326,10 +326,10 @@ bool readBigPasswords(FILE*fp, char* word){
 }
 
 void checkHashesAgainstFile(char* filename, char** hashes, int numHashes){
-	char word[10000];
+	char word[MAX_PASSWORD_LEN+1];
 	FILE* fp = fopen(filename, "r");
 	while(readBigPasswords(fp, word)!=true){
-		guessArg2(hashes, word, numHashes);
+		guess(hashes, word, MAX_PASSWORD_LEN);
 	}
 }
 
