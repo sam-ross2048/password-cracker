@@ -265,17 +265,17 @@ void changeLetter(char letter, char replacement, char* word, char** passwords, i
 }
 
 
-void alphabetToDigit(char* word, char** passwords, int length){
-	changeLetter('i', '1', word, passwords, length);
-	changeLetter('l', '1', word, passwords, length);
-	changeLetter('a', '4', word, passwords, length);
-	changeLetter('o', '0', word, passwords, length);
-	changeLetter('I', '1', word, passwords, length);
-	changeLetter('A', '4', word, passwords, length);
-	changeLetter('O', '0', word, passwords, length);
-	changeLetter('L', '1', word, passwords, length);
-	changeLetter('s', '$', word, passwords, length);
-	changeLetter('S', '$', word, passwords, length);
+void alphabetToDigit(char* word, char** passwords, int length, int numPasswords){
+	changeLetter('i', '1', word, passwords, length, numPasswords);
+	changeLetter('l', '1', word, passwords, length, numPasswords);
+	changeLetter('a', '4', word, passwords, length, numPasswords);
+	changeLetter('o', '0', word, passwords, length, numPasswords);
+	changeLetter('I', '1', word, passwords, length, numPasswords);
+	changeLetter('A', '4', word, passwords, length, numPasswords);
+	changeLetter('O', '0', word, passwords, length, numPasswords);
+	changeLetter('L', '1', word, passwords, length, numPasswords);
+	changeLetter('s', '$', word, passwords, length, numPasswords);
+	changeLetter('S', '$', word, passwords, length, numPasswords);
 }
 
 
@@ -408,12 +408,12 @@ int main(int argc, char* argv[]){
 	    readPasswords(sixLetter, SIX_LETTER_FILE);
 	    guessNumbers(fourLetter, 4);
 	    guessNumbers(sixLetter, 6);
-		checkFilePasswords(COMMON_FILE, fourLetter, 4);
-		checkFilePasswords(COMMON_FILE, sixLetter, 6);
+		checkFilePasswords(COMMON_FILE, fourLetter, 4, NUM_FOUR_LETTER);
+		checkFilePasswords(COMMON_FILE, sixLetter, 6, NUM_SIX_LETTER);
 		bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
-		checkFilePasswords(BRUTE_FILE, fourLetter, 4);
+		checkFilePasswords(BRUTE_FILE, fourLetter, 4, NUM_FOUR_LETTER);
 		bruteForce(6, 25, 97);
-		checkFilePasswords(BRUTE_FILE, sixLetter, 6);
+		checkFilePasswords(BRUTE_FILE, sixLetter, 6, NUM_SIX_LETTER);
 	}
 
 	else if(argc == 2){
