@@ -340,11 +340,11 @@ void guessArg2(char** hashes, char* password, int numHashes){
 }
 
 
-void checkHashesAgainstFile(char* filename, char** hashes){
+void checkHashesAgainstFile(char* filename, char** hashes, int numHashes){
 	char word[10000];
 	FILE* fp = fopen(filename, "r");
 	while(readBigPasswords(fp, word)!=true){
-		guessArg2(hashes, word);
+		guessArg2(hashes, word, numHashes);
 	}
 }
 
@@ -443,9 +443,10 @@ int main(int argc, char* argv[]){
 	else if(argc == 3){
 		char* passwordFile = argv[1];
 		char* hashFile = argv[2];
-		int numberHashes = findNumberPasswords(hashFile);
-		char* hashes[numberHashes];
-
+		int numHashes = findNumberPasswords(hashFile);
+		char* hashes[numHashes];
+		readPasswords(hashes, hashFile);
+		checkHashesAgainstFile(passwordFile, hashes, numHashes);
 	}
 
 
