@@ -54,7 +54,6 @@ void readPasswords(char* passwords[], char* filename){
         readSinglePassword(dump, fp);
         passwords[i] = (char*)malloc(sizeof(char)*HASH_SIZE);
         strcpy(passwords[i], dump);
-		printf("%s\n", passwords[i]);
     }
 }
 
@@ -111,7 +110,7 @@ void guess(char** passwords, char* guess, int length){
 
 	for(int i=0;i<number;i++){
         if(strcmp(passwords[i], hashedGuess)==0){
-            printf("%s %d   %s\n", guess, i+1+offset, hashedGuess);
+            printf("%s %d\n", guess, i+1+offset, hashedGuess);
         }
     }
 	free(hashedGuess);
