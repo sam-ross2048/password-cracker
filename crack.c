@@ -25,7 +25,7 @@
 #define NUM_SIX_LETTER 20
 
 void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop);
-void guess(char** passwords, char* guess, int length);
+void guess(char** passwords, char* guess, int length, int numPasswords);
 
 void readSinglePassword(char* dump, FILE* fp){
     unsigned char* buff = (unsigned char*)malloc(sizeof(char)*(HASH_LENGTH+1));
@@ -97,19 +97,13 @@ void readPasswords(char* passwords[], char* filename){
 }*/
 
 
-void guess(char** passwords, char* guess, int length){
+void guess(char** passwords, char* guess, int length, int numPasswords){
     char* hashedGuess = sha256S(guess);
-	int number = sizeof(passwords)/sizeof(passwords[0]);
 	int offset=0;
-	printf("%d\n", number);
-	if(length==4){
-		 number = NUM_FOUR_LETTER;
-	 }
-	else if(length==6){
-		number = NUM_SIX_LETTER;
+	if(length==6){
 		offset = NUM_FOUR_LETTER-1;
 	}
-	for(int i=0;i<number;i++){
+	for(int i=0;i<numPasswords;i++){
         if(strcmp(passwords[i], hashedGuess)==0){
             printf("%s %d\n", guess, i+1+offset);
         }
@@ -248,24 +242,24 @@ char* zeroPad(int number, int numDigits){
 }
 
 
-void guessNumbers(char** passwords, int numDigits){
+void guessNumbers(char** passwords, int numDigits, int numPasswords){
     int maxValue = pow(10, numDigits);
     char* word = (char*)malloc(sizeof(char)*(numDigits+1));
     for(int i=0;i<maxValue;i++){
         word = zeroPad(i, numDigits);
-        guess(passwords, word, numDigits);
+        guess(passwords, word, numDigits, numPasswords);
 		free(word);
     }
 }
 
 
-void changeLetter(char letter, char replacement, char* word, char** passwords, int length){
+void changeLetter(char letter, char replacement, char* word, char** passwords, int length, int numPasswords){
 	char* copy = (char*)malloc(sizeof(char)*(length+1));
 	strcpy(copy, word);
 	char* position = strstr(copy, &letter);
 	if(position){
 		position[0] = replacement;
-		guess(passwords, copy, length);
+		guess(passwords, copy, length, numPasswords);
 	}
 	free(copy);
 }
@@ -286,13 +280,13 @@ void alphabetToDigit(char* word, char** passwords, int length){
 
 
 
-void upperCaseGuess(char* word, char** passwords, int length){
+void upperCaseGuess(char* word, char** passwords, int length, int numPasswords){
 	char* copy = (char*)malloc(sizeof(char)*(length+1));
 	strcpy(copy, word);
 	if(copy[0]>='a' && copy[0]<='z'){
 		copy[0] = copy[0] - 32;
 	}
-	guess(passwords, copy, length);
+	guess(passwords, copy, length, numPasswords);
 	free(copy);
 }
 
@@ -321,16 +315,16 @@ bool readBigPasswords(FILE*fp, char* word){
 			break;
 		}
 	}
-	//word[strcspn(word, "\r\n")] = '\0';
 	word[i] = '\0';
 	return end;
 }
+
 
 void checkHashesAgainstFile(char* filename, char** hashes, int numHashes){
 	char word[MAX_PASSWORD_LEN+1];
 	FILE* fp = fopen(filename, "r");
 	while(readBigPasswords(fp, word)!=true){
-		guess(hashes, word, MAX_PASSWORD_LEN);
+		guess(hashes, word, MAX_PASSWORD_LEN, numHashes);
 	}
 }
 
@@ -355,16 +349,16 @@ bool readFilePassword(FILE* fp, char* word, int length){
 }
 
 
-void checkFilePasswords(char* filename, char** passwords, int length){
+void checkFilePasswords(char* filename, char** passwords, int length, int numPasswords){
 	char word[length+1];
 	FILE *fp;
 	fp = fopen(filename, "r");
 
 	while(readFilePassword(fp, word, length)!=true){
 		word[length] = '\0';
-		guess(passwords, word, length);
-		//upperCaseGuess(word, passwords, length);
-		//alphabetToDigit(word, passwords, length);
+		guess(passwords, word, length, numPasswords);
+		//upperCaseGuess(word, passwords, length, numPasswords);
+		//alphabetToDigit(word, passwords, length, numPasswords);
 	}
 	fclose(fp);
 }
