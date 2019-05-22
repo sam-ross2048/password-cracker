@@ -148,9 +148,29 @@ void guess(char** passwords, char* guess, int length){
 }
 
 
+void readBruteForce(int maxlen, char* buff, int* numGuesses, int maxGuesses){
+
+	for(int i=0;buff[i]!='\0' && ;i++){
+		for(char c=getc(fp);(c!='\n' || i==length-1)&&*numGuesses<maxGuesses;c=getc(fp)){
+			word[i] = c;
+			i++;
+			if(c==EOF){
+				end = true;
+				break;
+			}
+		}
+		for(i;i<length;i++){
+			word[i] = ' ';
+		}
+		word[strcspn(word, "\r\n")] = '\0';
+		printf("%s\n", word);
+	}
+}
+
+
 /* Code taken from https://github.com/Jsdemonsim/Stackoverflow/blob/master/alphabet/alphabet.c
 Generates brute force guesses and inserts into text file. */
-static void bruteForce(int maxlen, int alphaLen, int alphaOffset){
+static void bruteForce(int maxlen, int alphaLen, int alphaOffset, int* numGuesses, int maxGuesses){
     int   len      = 0;
     char *buffer   = malloc((maxlen + 1) * alphaLen * alphaLen);
     int  *letters  = malloc(maxlen * sizeof(int));
@@ -180,7 +200,8 @@ static void bruteForce(int maxlen, int alphaLen, int alphaOffset){
 				buffer[j++] = '\n';
 		    }
 		    //write(fd, buffer, bufLen);
-			fprintf(fp, "%s", buffer);
+			//fprintf(fp, "%s", buffer);
+			readBruteForce(maxlen, buffer, numGuesses, maxGuesses);
 		    continue;
 		}
 
@@ -389,7 +410,8 @@ void numberGeneration(int length, int maxGuesses, int* numGuesses){
 void generateGuesses(int maxGuesses, int length){
 	int* numGuesses = malloc(sizeof(int));
 	//fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses);
-	numberGeneration(length, maxGuesses, numGuesses); // IMPLEMENT THIS FUNCTION
+	//numberGeneration(length, maxGuesses, numGuesses);
+	bruteForce(6, 25, 97, numGuesses, maxGuesses); // IMPLEMENT THIS FUNCTION
 	free(numGuesses);
 }
 
@@ -397,7 +419,7 @@ void generateGuesses(int maxGuesses, int length){
 int main(int argc, char* argv[]){
 
 	if(argc == 1){
-		char* fourLetter[findNumberPasswords(FOUR_LETTER_FILE)];
+		/*char* fourLetter[findNumberPasswords(FOUR_LETTER_FILE)];
 	    char* sixLetter[findNumberPasswords(SIX_LETTER_FILE)];
 	    readPasswords(fourLetter, FOUR_LETTER_FILE);
 	    readPasswords(sixLetter, SIX_LETTER_FILE);
@@ -408,7 +430,7 @@ int main(int argc, char* argv[]){
 		bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
 		checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
 		bruteForce(6, 25, 97);
-		checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
+		checkFilePasswords("bruteGenerated.txt", sixLetter, 6);*/
 	}
 
 	else if(argc == 2){
