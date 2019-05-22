@@ -332,8 +332,8 @@ void guessArg2(char** hashes, char* password, int numHashes){
 	char* hashedGuess = sha256S(password);
 
 	for(int i=0;i<numHashes;i++){
-        if(strcmp(passwords[i], hashedGuess)==0){
-            printf("%s %d   %s\n", guess, i, hashedGuess);
+        if(strcmp(hashes[i], hashedGuess)==0){
+            printf("%s %d   %s\n", password, i, hashedGuess);
         }
     }
 	free(hashedGuess);
