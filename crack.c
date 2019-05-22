@@ -165,7 +165,7 @@ static void bruteForce(int maxlen, int alphaLen, int alphaOffset){
 
     // This for loop generates all 1 letter patterns, then 2 letters, etc,
     // up to the given maxlen.
-    for (len=1;len<=maxlen;len++) {
+    for (len=maxlen;len<=maxlen;len++) {
 		// The stride is one larger than len because each line has a '\n'.
 		int i;
 		int stride = len+1;
