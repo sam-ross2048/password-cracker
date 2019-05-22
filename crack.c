@@ -406,8 +406,8 @@ int main(int argc, char* argv[]){
 	    char* sixLetter[findNumberPasswords(SIX_LETTER_FILE)];
 	    readPasswords(fourLetter, FOUR_LETTER_FILE);
 	    readPasswords(sixLetter, SIX_LETTER_FILE);
-	    guessNumbers(fourLetter, 4);
-	    guessNumbers(sixLetter, 6);
+	    guessNumbers(fourLetter, 4, NUM_FOUR_LETTER);
+	    guessNumbers(sixLetter, 6, NUM_SIX_LETTER);
 		checkFilePasswords(COMMON_FILE, fourLetter, 4, NUM_FOUR_LETTER);
 		checkFilePasswords(COMMON_FILE, sixLetter, 6, NUM_SIX_LETTER);
 		bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
