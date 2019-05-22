@@ -150,7 +150,7 @@ void guess(char** passwords, char* guess, int length){
 
 void readBruteForce(int maxlen, char* buff, int* numGuesses, int maxGuesses){
 	char* word = (char*)malloc(sizeof(char)*(maxlen+1));
-	for(int i=0;buff[i]!='\0' && *numGuesses<maxGuesses;;){
+	for(int i=0;buff[i]!='\0' && *numGuesses<maxGuesses;){
 		for(char c=buff[i];c!='\n' || i==maxlen-1;c=buff[i]){
 			word[i] = c;
 			i++;
