@@ -54,6 +54,7 @@ void readPasswords(char* passwords[], char* filename){
         readSinglePassword(dump, fp);
         passwords[i] = (char*)malloc(sizeof(char)*HASH_SIZE);
         strcpy(passwords[i], dump);
+		printf("%s\n", passwords[i]);
     }
 }
 
@@ -94,8 +95,6 @@ void readPasswords(char* passwords[], char* filename){
 		}
 	}
 }*/
-
-
 
 
 void guess(char** passwords, char* guess, int length){
@@ -408,7 +407,6 @@ void generateGuesses(int maxGuesses, int length){
 
 
 int main(int argc, char* argv[]){
-
 	if(argc == 1){
 		char* fourLetter[findNumberPasswords(FOUR_LETTER_FILE)];
 	    char* sixLetter[findNumberPasswords(SIX_LETTER_FILE)];
@@ -419,16 +417,15 @@ int main(int argc, char* argv[]){
 		checkFilePasswords(COMMON_FILE, fourLetter, 4);
 		checkFilePasswords(COMMON_FILE, sixLetter, 6);
 		bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
-		checkFilePasswords("bruteGenerated.txt", fourLetter, 4);
+		checkFilePasswords(BRUTE_FILE, fourLetter, 4);
 		bruteForce(6, 25, 97);
-		checkFilePasswords("bruteGenerated.txt", sixLetter, 6);
+		checkFilePasswords(BRUTE_FILE, sixLetter, 6);
 	}
 
 	else if(argc == 2){
 		int maxGuesses = atoi(argv[1]);
 		generateGuesses(maxGuesses, 6);
 	}
-
 	else if(argc == 3){
 		char* passwordFile = argv[1];
 		char* hashFile = argv[2];
@@ -437,9 +434,5 @@ int main(int argc, char* argv[]){
 		readPasswords(hashes, hashFile);
 		checkHashesAgainstFile(passwordFile, hashes, numHashes);
 	}
-
-
-
-    //guessPasswords(sixLetter);
     return 0;
 }
