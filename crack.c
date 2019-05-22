@@ -26,36 +26,6 @@
 void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop);
 void guess(char** passwords, char* guess, int length);
 
-
-
-/* Function to convert bytes to hexadecimal string. Code written by Brad Conte
-    found from same source code as sha256.c and sha256.h */
-/*char *sha256_byteToHexString(BYTE data[]) {
-	char *hexC = "0123456789abcdef";
-	char *hexS = malloc(65);
-	if (!hexS) return NULL;
-	for(BYTE i; i<32; i++) {
-		hexS[i*2]   = hexC[data[i]>>4];
-		hexS[i*2+1] = hexC[data[i]&0xF];
-	}
-	hexS[64] = 0;
-	return hexS;
-}*/
-
-/* Function to find the hashed version of a guessed password. Code written by
-    Brad Conte, found from same source code as sha256.c and sha256.h */
-/*char *sha256S(const char *bufferToHash) {
-	if (!bufferToHash) return NULL;
-	SHA256_CTX ctx;
-	sha256_init(&ctx);
-	sha256_update(&ctx, bufferToHash, strlen(bufferToHash));
-	BYTE result[32];
-	sha256_final(&ctx, result);
-	char *hexS = sha256_byteToHexString(result);
-	return hexS;
-}*/
-
-
 void readSinglePassword(char* dump, FILE* fp){
     unsigned char* buff = (unsigned char*)malloc(sizeof(char)*(HASH_LENGTH+1));
     fread(buff, HASH_LENGTH, 1, fp);
