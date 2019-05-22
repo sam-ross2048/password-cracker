@@ -344,7 +344,6 @@ bool readFilePassword(FILE* fp, char* word, int length){
 		word[i] = ' ';
 	}
 	word[strcspn(word, "\r\n")] = '\0';
-	printf("%s\n", word);
 	return end;
 }
 
@@ -393,9 +392,7 @@ void generateGuesses(int maxGuesses, int length){
 	fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses);
 	numberGeneration(length, maxGuesses, numGuesses); // IMPLEMENT THIS FUNCTION
 	bruteForce(6, 25, 97);
-	FILE* fp = fopen(BRUTE_FILE, "r");
-	char* word = (char*)malloc(sizeof(char)*(length+1));
-	readFilePassword(fp, word, length);
+	fileGeneration(BRUTE_FILE, length, maxGuesses, numGuesses);
 	free(numGuesses);
 }
 
