@@ -399,8 +399,10 @@ void generateGuesses(int maxGuesses, int length){
 	int* numGuesses = malloc(sizeof(int));
 	fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses);
 	numberGeneration(length, maxGuesses, numGuesses); // IMPLEMENT THIS FUNCTION
-	bruteForce(6, 25, 97);
-	fileGeneration(BRUTE_FILE, length, maxGuesses, numGuesses);
+	if(*numGuesses < maxGuesses){
+		bruteForce(6, 25, 97);
+		fileGeneration(BRUTE_FILE, length, maxGuesses, numGuesses);
+	}
 	free(numGuesses);
 }
 
