@@ -381,6 +381,7 @@ void numberGeneration(int length, int maxGuesses, int* numGuesses){
         word = zeroPad(i, length);
         printf("%s\n", word);
 		free(word);
+		*numGuesses+=1;
     }
 }
 
