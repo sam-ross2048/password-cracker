@@ -340,6 +340,22 @@ void guessArg2(char** hashes, char* password, int numHashes){
 }
 
 
+bool readBigPasswords(FILE*fp, char* word){
+	int i=0;
+	bool end = false;
+
+	for(char c=getc(fp);c!='\n';c=getc(fp)){
+		word[i] = c;
+		i++;
+		if(c==EOF){
+			end = true;
+			break;
+		}
+	}
+	word[strcspn(word, "\r\n")] = '\0';
+	return end;
+}
+
 void checkHashesAgainstFile(char* filename, char** hashes, int numHashes){
 	char word[10000];
 	FILE* fp = fopen(filename, "r");
