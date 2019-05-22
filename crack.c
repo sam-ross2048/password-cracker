@@ -393,7 +393,7 @@ void generateGuesses(int maxGuesses, int length){
 	fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses);
 	numberGeneration(length, maxGuesses, numGuesses); // IMPLEMENT THIS FUNCTION
 	bruteForce(6, 25, 97);
-	FILE* fp = fopen(BRUTE_FILE);
+	FILE* fp = fopen(BRUTE_FILE, "r");
 	char* word = (char*)malloc(sizeof(char)*(length+1));
 	readFilePassword(fp, word, length);
 	free(numGuesses);
