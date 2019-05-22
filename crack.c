@@ -352,7 +352,8 @@ bool readBigPasswords(FILE*fp, char* word){
 			break;
 		}
 	}
-	word[strcspn(word, "\r\n")] = '\0';
+	//word[strcspn(word, "\r\n")] = '\0';
+	word[i] = '\0';
 	return end;
 }
 
