@@ -30,7 +30,7 @@ void guess(char** passwords, char* guess, int length);
 
 /* Function to convert bytes to hexadecimal string. Code written by Brad Conte
     found from same source code as sha256.c and sha256.h */
-char *sha256_byteToHexString(BYTE data[]) {
+/*char *sha256_byteToHexString(BYTE data[]) {
 	char *hexC = "0123456789abcdef";
 	char *hexS = malloc(65);
 	if (!hexS) return NULL;
@@ -40,7 +40,7 @@ char *sha256_byteToHexString(BYTE data[]) {
 	}
 	hexS[64] = 0;
 	return hexS;
-}
+}*/
 
 /* Function to find the hashed version of a guessed password. Code written by
     Brad Conte, found from same source code as sha256.c and sha256.h */
