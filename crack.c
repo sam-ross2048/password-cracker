@@ -44,7 +44,7 @@ void guess(char** passwords, char* guess, int length);
 
 /* Function to find the hashed version of a guessed password. Code written by
     Brad Conte, found from same source code as sha256.c and sha256.h */
-char *sha256S(const char *bufferToHash) {
+/*char *sha256S(const char *bufferToHash) {
 	if (!bufferToHash) return NULL;
 	SHA256_CTX ctx;
 	sha256_init(&ctx);
@@ -53,7 +53,7 @@ char *sha256S(const char *bufferToHash) {
 	sha256_final(&ctx, result);
 	char *hexS = sha256_byteToHexString(result);
 	return hexS;
-}
+}*/
 
 
 void readSinglePassword(char* dump, FILE* fp){

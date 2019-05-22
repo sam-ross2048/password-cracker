@@ -171,3 +171,14 @@ char *sha256_byteToHexString(BYTE data[]) {
 	hexS[64] = 0;
 	return hexS;
 }
+
+char *sha256S(const char *bufferToHash) {
+	if (!bufferToHash) return NULL;
+	SHA256_CTX ctx;
+	sha256_init(&ctx);
+	sha256_update(&ctx, bufferToHash, strlen(bufferToHash));
+	BYTE result[32];
+	sha256_final(&ctx, result);
+	char *hexS = sha256_byteToHexString(result);
+	return hexS;
+}
