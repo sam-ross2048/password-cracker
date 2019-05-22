@@ -328,6 +328,27 @@ void upperCaseGuess(char* word, char** passwords, int length){
 }
 
 
+void guessArg2(char** hashes, char* password, int numHashes){
+	char* hashedGuess = sha256S(guess);
+
+	for(int i=0;i<numHashes;i++){
+        if(strcmp(passwords[i], hashedGuess)==0){
+            printf("%s %d   %s\n", guess, i, hashedGuess);
+        }
+    }
+	free(hashedGuess);
+}
+
+
+void checkHashesAgainstFile(char* filename, char** hashes){
+	char word[10000];
+	FILE* fp = fopen(filename, "r");
+	while(readBigPasswords(fp, word)!=true){
+		guessArg2(hashes, word);
+	}
+}
+
+
 bool readFilePassword(FILE* fp, char* word, int length){
 	int i=0;
 	bool end = false;
@@ -422,8 +443,9 @@ int main(int argc, char* argv[]){
 	else if(argc == 3){
 		char* passwordFile = argv[1];
 		char* hashFile = argv[2];
-		char* hashes[findNumberPasswords(hashFile)];
-		printf("%d\n", findNumberPasswords(hashFile));
+		int numberHashes = findNumberPasswords(hashFile);
+		char* hashes[numberHashes];
+
 	}
 
 
