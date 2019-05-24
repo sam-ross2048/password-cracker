@@ -248,6 +248,7 @@ void changeLetter(char letter, char replacement, char* word, int maxGuesses, int
 	if(*numGuesses >= maxGuesses){
 		return;
 	}
+	int length = strlen(word);
 	char* copy = (char*)malloc(sizeof(char)*(length+1));
 	strcpy(copy, word);
 	char* position = strstr(copy, &letter);
