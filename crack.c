@@ -55,6 +55,7 @@ void readPasswords(char* passwords[], char* filename){
         readSinglePassword(dump, fp);
         passwords[i] = (char*)malloc(sizeof(char)*HASH_SIZE);
         strcpy(passwords[i], dump);
+		printf("%s\n", passwords[i]);
     }
 }
 
@@ -64,7 +65,7 @@ void readPasswords(char* passwords[], char* filename){
 	if(stop){
 		return;
 	}
-	
+
 	int n = strlen(word);
 	int i, j;
 	char* newWord = (char*)malloc(sizeof(char)*(n+1));
