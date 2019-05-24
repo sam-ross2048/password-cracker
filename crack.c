@@ -329,7 +329,7 @@ void checkFilePasswords(char* filename, char** passwords, int length, int numPas
 }
 
 // Reads plain-text passwords from a file and prints them. (Does not guess).
-void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses, twoArgs){
+void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses, bool twoArgs){
 	char word[length+1];
 	FILE* fp = fopen(filename, "r");
 	while(readFilePassword(fp, word, length, twoArgs)!=true && *numGuesses < maxGuesses){
