@@ -24,8 +24,6 @@
 #define NUM_FOUR_LETTER 10
 #define NUM_SIX_LETTER 20
 
-void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop);
-void guess(char** passwords, char* guess, int length, int numPasswords);
 
 void readSinglePassword(char* dump, FILE* fp){
     unsigned char* buff = (unsigned char*)malloc(sizeof(char)*(HASH_LENGTH+1));
