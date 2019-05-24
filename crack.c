@@ -329,10 +329,10 @@ void checkFilePasswords(char* filename, char** passwords, int length, int numPas
 }
 
 // Reads plain-text passwords from a file and prints them. (Does not guess).
-void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses){
+void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses, twoArgs){
 	char word[length+1];
 	FILE* fp = fopen(filename, "r");
-	while(readFilePassword(fp, word, length)!=true && *numGuesses < maxGuesses){
+	while(readFilePassword(fp, word, length, twoArgs)!=true && *numGuesses < maxGuesses){
 		word[length] = '\0';
 		printf("%s\n", word);
 		*numGuesses+=1;
@@ -355,13 +355,13 @@ void numberGeneration(int length, int maxGuesses, int* numGuesses){
 }
 
 // Generates guesses and prints them
-void generateGuesses(int maxGuesses, int length){
+void generateGuesses(int maxGuesses, int length, bool twoArgs){
 	int* numGuesses = malloc(sizeof(int));
-	fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses);
+	fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses, twoArgs);
 	numberGeneration(length, maxGuesses, numGuesses); // IMPLEMENT THIS FUNCTION
 	if(*numGuesses < maxGuesses){
 		bruteForce(6, ALPHABET_LENGTH, ALPHABET_OFFSET);
-		fileGeneration(BRUTE_FILE, length, maxGuesses, numGuesses);
+		fileGeneration(BRUTE_FILE, length, maxGuesses, numGuesses, twoArgs);
 	}
 	free(numGuesses);
 }
@@ -386,7 +386,7 @@ int main(int argc, char* argv[]){
 	// Simply generates guesses and displays them.
 	else if(argc == 2){
 		int maxGuesses = atoi(argv[1]);
-		generateGuesses(maxGuesses, 6);
+		generateGuesses(maxGuesses, 6, false);
 	}
 	// Tests plain-text passwords from a file against hashed passwords.
 	else if(argc == 3){
@@ -395,7 +395,7 @@ int main(int argc, char* argv[]){
 		int numHashes = findNumberPasswords(hashFile);
 		char* hashes[numHashes];
 		readPasswords(hashes, hashFile);
-		checkFilePasswords(passwordFile, hashes, numHashes, true);
+		checkFilePasswords(passwordFile, hashes, MAX_PASSWORD_LEN, numHashes, true);
 	}
     return 0;
 }
