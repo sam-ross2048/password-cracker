@@ -18,11 +18,8 @@
 #define COMMON_FILE "common_passwords.txt"
 #define BRUTE_FILE "bruteGenerated.txt"
 
-
-#define FULL_ALPHABET_LENGTH 94
+#define ALPHABET_LENGTH 94
 #define ALPHABET_OFFSET 32
-#define START_OF_ALPHABET 97
-#define ALPHABET_LENGTH 26
 
 #define NUM_FOUR_LETTER 10
 #define NUM_SIX_LETTER 20
@@ -63,10 +60,11 @@ void readPasswords(char* passwords[], char* filename){
 
 
 // Function finds all words 1 edit-distance away from a word.
-void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop){
+/*void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop){
 	if(stop){
 		return;
 	}
+	
 	int n = strlen(word);
 	int i, j;
 	char* newWord = (char*)malloc(sizeof(char)*(n+1));
@@ -81,10 +79,10 @@ void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, b
 			free(newWord);
 		}
 	}
-}
+}*/
 
 
-void guess(char** passwords, char* guess, int length, int numPasswords, bool stop){
+void guess(char** passwords, char* guess, int length, int numPasswords){
     char* hashedGuess = sha256S(guess);
 	int offset=0;
 	if(length==6){
@@ -93,7 +91,6 @@ void guess(char** passwords, char* guess, int length, int numPasswords, bool sto
 	for(int i=0;i<numPasswords;i++){
         if(strcmp(passwords[i], hashedGuess)==0){
             printf("%s %d\n", guess, i+1+offset);
-			findAllEdits(passwords, guess, FULL_ALPHABET_LENGTH, ALPHABET_OFFSET, false);
         }
     }
 	free(hashedGuess);
@@ -381,7 +378,7 @@ void generateGuesses(int maxGuesses, int length){
 	fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses);
 	numberGeneration(length, maxGuesses, numGuesses); // IMPLEMENT THIS FUNCTION
 	if(*numGuesses < maxGuesses){
-		bruteForce(6, ALPHABET_LENGTH, START_OF_ALPHABET);
+		bruteForce(6, 25, 97);
 		fileGeneration(BRUTE_FILE, length, maxGuesses, numGuesses);
 	}
 	free(numGuesses);
@@ -398,9 +395,9 @@ int main(int argc, char* argv[]){
 	    guessNumbers(sixLetter, 6, NUM_SIX_LETTER);
 		checkFilePasswords(COMMON_FILE, fourLetter, 4, NUM_FOUR_LETTER);
 		checkFilePasswords(COMMON_FILE, sixLetter, 6, NUM_SIX_LETTER);
-		bruteForce(4, FULL_ALPHABET_LENGTH, ALPHABET_OFFSET);
+		bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
 		checkFilePasswords(BRUTE_FILE, fourLetter, 4, NUM_FOUR_LETTER);
-		bruteForce(6, ALPHABET_LENGTH, START_OF_ALPHABET);
+		bruteForce(6, 25, 97);
 		checkFilePasswords(BRUTE_FILE, sixLetter, 6, NUM_SIX_LETTER);
 	}
 
