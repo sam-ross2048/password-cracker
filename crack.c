@@ -311,6 +311,7 @@ bool readFilePassword(FILE* fp, char* word, int length, bool twoArgs){
 		}
 	}
 	word[strcspn(word, "\r\n")] = '\0';
+	word[i]='\0';
 	return end;
 }
 
