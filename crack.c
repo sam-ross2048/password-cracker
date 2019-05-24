@@ -63,29 +63,6 @@ void readPasswords(char* passwords[], char* filename){
     }
 }
 
-
-// Function finds all words 1 edit-distance away from a word.
-/*void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop){
-	if(stop){
-		return;
-	}
-
-	int n = strlen(word);
-	int i, j;
-	char* newWord = (char*)malloc(sizeof(char)*(n+1));
-	strcpy(newWord, word);
-
-	// Finds all substitutions and adds to edits.
-	for(i=0;i<n;i++){
-		for(j=0;j<alphaLen;j++){
-			strcpy(newWord, word);
-			newWord[i] = (char)(i+alphaOffset);
-			guess(passwords, newWord, n, true);
-			free(newWord);
-		}
-	}
-}*/
-
 // Checks whether a word is one of the hashed passwords.
 void guess(char** passwords, char* guess, int length, int numPasswords){
     char* hashedGuess = sha256S(guess);
@@ -286,7 +263,6 @@ void upperCaseGenerate(char* word, int length, int maxGuesses, int* numGuesses){
 		printf("%s\n", copy);
 		*numGuesses+=1;
 	}
-
 	free(copy);
 }
 
@@ -317,7 +293,7 @@ void checkHashesAgainstFile(char* filename, char** hashes, int numHashes){
 }
 
 // Reads a single plain-text password from a file.
-bool readFilePassword(FILE* fp, char* word, int length){
+bool readFilePassword(FILE* fp, char* word, int length, bool twoArgs){
 	int i=0;
 	bool end = false;
 
@@ -329,20 +305,21 @@ bool readFilePassword(FILE* fp, char* word, int length){
 			break;
 		}
 	}
-	for(i;i<length;i++){
-		word[i] = ' ';
+	if(!twoArgs){
+		for(i;i<length;i++){
+			word[i] = ' ';
+		}
 	}
 	word[strcspn(word, "\r\n")] = '\0';
 	return end;
 }
 
 // Checks all plain-text passwords in a file against the hashed passwords.
-void checkFilePasswords(char* filename, char** passwords, int length, int numPasswords){
+void checkFilePasswords(char* filename, char** passwords, int length, int numPasswords, bool twoArgs){
 	char word[length+1];
-	FILE *fp;
-	fp = fopen(filename, "r");
+	FILE *fp = fopen(filename, "r");
 
-	while(readFilePassword(fp, word, length)!=true){
+	while(readFilePassword(fp, word, length, twoArgs)!=true){
 		word[length] = '\0';
 		guess(passwords, word, length, numPasswords);
 		//upperCaseGuess(word, passwords, length, numPasswords);
@@ -399,12 +376,12 @@ int main(int argc, char* argv[]){
 	    readPasswords(sixLetter, SIX_LETTER_FILE);
 	    guessNumbers(fourLetter, 4, NUM_FOUR_LETTER);
 	    guessNumbers(sixLetter, 6, NUM_SIX_LETTER);
-		checkFilePasswords(COMMON_FILE, fourLetter, 4, NUM_FOUR_LETTER);
-		checkFilePasswords(COMMON_FILE, sixLetter, 6, NUM_SIX_LETTER);
+		checkFilePasswords(COMMON_FILE, fourLetter, 4, NUM_FOUR_LETTER, false);
+		checkFilePasswords(COMMON_FILE, sixLetter, 6, NUM_SIX_LETTER, false);
 		bruteForce(4, FULL_ALPHABET_LENGTH, FULL_ALPHABET_OFFSET);
-		checkFilePasswords(BRUTE_FILE, fourLetter, 4, NUM_FOUR_LETTER);
+		checkFilePasswords(BRUTE_FILE, fourLetter, 4, NUM_FOUR_LETTER, false);
 		bruteForce(6, ALPHABET_LENGTH, ALPHABET_OFFSET);
-		checkFilePasswords(BRUTE_FILE, sixLetter, 6, NUM_SIX_LETTER);
+		checkFilePasswords(BRUTE_FILE, sixLetter, 6, NUM_SIX_LETTER, false);
 	}
 	// Simply generates guesses and displays them.
 	else if(argc == 2){
@@ -418,7 +395,7 @@ int main(int argc, char* argv[]){
 		int numHashes = findNumberPasswords(hashFile);
 		char* hashes[numHashes];
 		readPasswords(hashes, hashFile);
-		checkHashesAgainstFile(passwordFile, hashes, numHashes);
+		checkFilePasswords(passwordFile, hashes, numHashes, true);
 	}
     return 0;
 }
