@@ -18,8 +18,11 @@
 #define COMMON_FILE "common_passwords.txt"
 #define BRUTE_FILE "bruteGenerated.txt"
 
-#define ALPHABET_LENGTH 94
+
+#define FULL_ALPHABET_LENGTH 94
 #define ALPHABET_OFFSET 32
+#define START_OF_ALPHABET 97
+#define ALPHABET_LENGTH 26
 
 #define NUM_FOUR_LETTER 10
 #define NUM_SIX_LETTER 20
@@ -60,11 +63,10 @@ void readPasswords(char* passwords[], char* filename){
 
 
 // Function finds all words 1 edit-distance away from a word.
-/*void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop){
+void findAllEdits(char** passwords, char* word, int alphaLen, int alphaOffset, bool stop){
 	if(stop){
 		return;
 	}
-	char alphabet[] = "abcdefghijklmnopqrstuvwxyz\0";
 	int n = strlen(word);
 	int i, j;
 	char* newWord = (char*)malloc(sizeof(char)*(n+1));
@@ -73,31 +75,16 @@ void readPasswords(char* passwords[], char* filename){
 	// Finds all substitutions and adds to edits.
 	for(i=0;i<n;i++){
 		for(j=0;j<alphaLen;j++){
-			newWord = (char*)malloc(sizeof(char)*(n+1));
 			strcpy(newWord, word);
 			newWord[i] = (char)(i+alphaOffset);
 			guess(passwords, newWord, n, true);
 			free(newWord);
 		}
 	}
-
-	// Finds all insertions and adds to edits.
-	int z;
-	for(i=0;i<=n;i++){
-		for(j=0;j<alphaLen;j++){
-			newWord = (char*)malloc(sizeof(char)*(n+2));
-			strcpy(newWord, word);
-			for(z=n+1;z>i;z--){
-				newWord[z] = newWord[z-1];
-			}
-			newWord[i] = (char)(i+alphaOffset);//alphabet[j];
-			guess(passwords, newWord, n, true);
-		}
-	}
-}*/
+}
 
 
-void guess(char** passwords, char* guess, int length, int numPasswords){
+void guess(char** passwords, char* guess, int length, int numPasswords, bool stop){
     char* hashedGuess = sha256S(guess);
 	int offset=0;
 	if(length==6){
@@ -106,6 +93,7 @@ void guess(char** passwords, char* guess, int length, int numPasswords){
 	for(int i=0;i<numPasswords;i++){
         if(strcmp(passwords[i], hashedGuess)==0){
             printf("%s %d\n", guess, i+1+offset);
+			findAllEdits(passwords, guess, FULL_ALPHABET_LENGTH, ALPHABET_OFFSET, false);
         }
     }
 	free(hashedGuess);
@@ -393,7 +381,7 @@ void generateGuesses(int maxGuesses, int length){
 	fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses);
 	numberGeneration(length, maxGuesses, numGuesses); // IMPLEMENT THIS FUNCTION
 	if(*numGuesses < maxGuesses){
-		bruteForce(6, 25, 97);
+		bruteForce(6, ALPHABET_LENGTH, START_OF_ALPHABET);
 		fileGeneration(BRUTE_FILE, length, maxGuesses, numGuesses);
 	}
 	free(numGuesses);
@@ -410,9 +398,9 @@ int main(int argc, char* argv[]){
 	    guessNumbers(sixLetter, 6, NUM_SIX_LETTER);
 		checkFilePasswords(COMMON_FILE, fourLetter, 4, NUM_FOUR_LETTER);
 		checkFilePasswords(COMMON_FILE, sixLetter, 6, NUM_SIX_LETTER);
-		bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
+		bruteForce(4, FULL_ALPHABET_LENGTH, ALPHABET_OFFSET);
 		checkFilePasswords(BRUTE_FILE, fourLetter, 4, NUM_FOUR_LETTER);
-		bruteForce(6, 25, 97);
+		bruteForce(6, ALPHABET_LENGTH, START_OF_ALPHABET);
 		checkFilePasswords(BRUTE_FILE, sixLetter, 6, NUM_SIX_LETTER);
 	}
 
