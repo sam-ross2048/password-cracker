@@ -1,4 +1,8 @@
-
+/* Program written by Sam Ross for UniMelb subject COMP30023. Some code taken
+from open source Github repositories with attribution provided.
+This program generates guesses and can test whether the guesses match hashed
+passwords provided in a file.
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -18,13 +22,16 @@
 #define COMMON_FILE "common_passwords.txt"
 #define BRUTE_FILE "bruteGenerated.txt"
 
-#define ALPHABET_LENGTH 94
-#define ALPHABET_OFFSET 32
+#define CASE_DIFFERENCE 32
+#define FULL_ALPHABET_LENGTH 94
+#define FULL_ALPHABET_OFFSET 32
+#define ALPHABET_LENGTH 26
+#define ALPHABET_OFFSET 97
 
 #define NUM_FOUR_LETTER 10
 #define NUM_SIX_LETTER 20
 
-
+// Reads a single password from a text file.
 void readSinglePassword(char* dump, FILE* fp){
     unsigned char* buff = (unsigned char*)malloc(sizeof(char)*(HASH_LENGTH+1));
     fread(buff, HASH_LENGTH, 1, fp);
@@ -34,6 +41,7 @@ void readSinglePassword(char* dump, FILE* fp){
 	free(buff);
 }
 
+// Finds the number of hashed passwords in a text file.
 int findNumberPasswords(char* fileName){
     FILE* fp = fopen(fileName, "r");
     fseek(fp, 0L, SEEK_END);
@@ -42,11 +50,10 @@ int findNumberPasswords(char* fileName){
     return (int)res/HASH_LENGTH;
 }
 
-
+// Reads all of the passwords from a text file into a string array.
 void readPasswords(char* passwords[], char* filename){
     FILE* fp;
     fp = fopen(filename, "r");
-
     int numPasswords = findNumberPasswords(filename);
     for(int i=0;i<numPasswords;i++){
         char dump[HASH_SIZE];
@@ -79,7 +86,7 @@ void readPasswords(char* passwords[], char* filename){
 	}
 }*/
 
-
+// Checks whether a word is one of the hashed passwords.
 void guess(char** passwords, char* guess, int length, int numPasswords){
     char* hashedGuess = sha256S(guess);
 	int offset=0;
@@ -213,6 +220,7 @@ static void bruteForce(int maxlen, int alphaLen, int alphaOffset){
 }
 
 
+// Pads an integer with zeroes and converts to string.
 char* zeroPad(int number, int numDigits){
     char* guess = (char*)malloc(sizeof(char)*(numDigits+1));
 	if(numDigits==4){
@@ -224,7 +232,7 @@ char* zeroPad(int number, int numDigits){
     return guess;
 }
 
-
+// Guesses numbers upto a maximum value.
 void guessNumbers(char** passwords, int numDigits, int numPasswords){
     int maxValue = pow(10, numDigits);
     char* word = (char*)malloc(sizeof(char)*(numDigits+1));
@@ -235,54 +243,50 @@ void guessNumbers(char** passwords, int numDigits, int numPasswords){
     }
 }
 
-
-void changeLetter(char letter, char replacement, char* word, char** passwords, int length, int numPasswords){
+// Changes a character in a word to a replacement character.
+void changeLetter(char letter, char replacement, char* word, int maxGuesses, int* numGuesses){
+	if(*numGuesses >= maxGuesses){
+		return;
+	}
 	char* copy = (char*)malloc(sizeof(char)*(length+1));
 	strcpy(copy, word);
 	char* position = strstr(copy, &letter);
 	if(position){
 		position[0] = replacement;
-		guess(passwords, copy, length, numPasswords);
+		printf("%s\n", copy);
+		*numGuesses+=1;
 	}
 	free(copy);
 }
 
-
-void alphabetToDigit(char* word, char** passwords, int length, int numPasswords){
-	changeLetter('i', '1', word, passwords, length, numPasswords);
-	changeLetter('l', '1', word, passwords, length, numPasswords);
-	changeLetter('a', '4', word, passwords, length, numPasswords);
-	changeLetter('o', '0', word, passwords, length, numPasswords);
-	changeLetter('I', '1', word, passwords, length, numPasswords);
-	changeLetter('A', '4', word, passwords, length, numPasswords);
-	changeLetter('O', '0', word, passwords, length, numPasswords);
-	changeLetter('L', '1', word, passwords, length, numPasswords);
-	changeLetter('s', '$', word, passwords, length, numPasswords);
-	changeLetter('S', '$', word, passwords, length, numPasswords);
+// Checks common character replacements.
+void alphabetToDigit(char* word, int maxGuesses, int* numGuesses){
+	changeLetter('i', '1', word, maxGuesses, numGuesses);
+	changeLetter('l', '1', word, maxGuesses, numGuesses);
+	changeLetter('a', '4', word, maxGuesses, numGuesses);
+	changeLetter('o', '0', word, maxGuesses, numGuesses);
+	changeLetter('I', '1', word, maxGuesses, numGuesses);
+	changeLetter('A', '4', word, maxGuesses, numGuesses);
+	changeLetter('O', '0', word, maxGuesses, numGuesses);
+	changeLetter('L', '1', word, maxGuesses, numGuesses);
+	changeLetter('s', '$', word, maxGuesses, numGuesses);
+	changeLetter('S', '$', word, maxGuesses, numGuesses);
 }
 
-
-
-void upperCaseGuess(char* word, char** passwords, int length, int numPasswords){
+// Takes a word, converts the first character to uppercase and then prints.
+void upperCaseGenerate(char* word, int length, int maxGuesses, int* numGuesses){
+	if(*numGuesses>=maxGuesses){
+		return;
+	}
 	char* copy = (char*)malloc(sizeof(char)*(length+1));
 	strcpy(copy, word);
 	if(copy[0]>='a' && copy[0]<='z'){
-		copy[0] = copy[0] - 32;
+		copy[0] = copy[0] - CASE_DIFFERENCE;
+		printf("%s\n", copy);
+		*numGuesses+=1;
 	}
-	guess(passwords, copy, length, numPasswords);
+
 	free(copy);
-}
-
-
-void guessArg2(char** hashes, char* password, int numHashes){
-	char* hashedGuess = sha256S(password);
-
-	for(int i=0;i<numHashes;i++){
-        if(strcmp(hashes[i], hashedGuess)==0){
-            printf("%s %d\n", password, i);
-        }
-    }
-	free(hashedGuess);
 }
 
 
@@ -311,7 +315,7 @@ void checkHashesAgainstFile(char* filename, char** hashes, int numHashes){
 	}
 }
 
-
+// Reads a single plain-text password from a file.
 bool readFilePassword(FILE* fp, char* word, int length){
 	int i=0;
 	bool end = false;
@@ -331,7 +335,7 @@ bool readFilePassword(FILE* fp, char* word, int length){
 	return end;
 }
 
-
+// Checks all plain-text passwords in a file against the hashed passwords.
 void checkFilePasswords(char* filename, char** passwords, int length, int numPasswords){
 	char word[length+1];
 	FILE *fp;
@@ -346,7 +350,7 @@ void checkFilePasswords(char* filename, char** passwords, int length, int numPas
 	fclose(fp);
 }
 
-
+// Reads plain-text passwords from a file and prints them. (Does not guess).
 void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses){
 	char word[length+1];
 	FILE* fp = fopen(filename, "r");
@@ -354,11 +358,13 @@ void fileGeneration(char* filename, int length, int maxGuesses, int* numGuesses)
 		word[length] = '\0';
 		printf("%s\n", word);
 		*numGuesses+=1;
+		upperCaseGenerate(word, length, maxGuesses, numGuesses);
+		alphabetToDigit(word, maxGuesses, numGuesses);
 	}
 	fclose(fp);
 }
 
-
+// Generates numbers up to a maximum. (Does not guess).
 void numberGeneration(int length, int maxGuesses, int* numGuesses){
 	int maxValue = pow(10, length);
     char* word = (char*)malloc(sizeof(char)*(length+1));
@@ -370,13 +376,13 @@ void numberGeneration(int length, int maxGuesses, int* numGuesses){
     }
 }
 
-
+// Generates guesses and prints them
 void generateGuesses(int maxGuesses, int length){
 	int* numGuesses = malloc(sizeof(int));
 	fileGeneration(COMMON_FILE, length, maxGuesses, numGuesses);
 	numberGeneration(length, maxGuesses, numGuesses); // IMPLEMENT THIS FUNCTION
 	if(*numGuesses < maxGuesses){
-		bruteForce(6, 25, 97);
+		bruteForce(6, ALPHABET_LENGTH, ALPHABET_OFFSET);
 		fileGeneration(BRUTE_FILE, length, maxGuesses, numGuesses);
 	}
 	free(numGuesses);
@@ -384,6 +390,7 @@ void generateGuesses(int maxGuesses, int length){
 
 
 int main(int argc, char* argv[]){
+	// Generates guesses and tests them against a file of hashed passwords.
 	if(argc == 1){
 		char* fourLetter[findNumberPasswords(FOUR_LETTER_FILE)];
 	    char* sixLetter[findNumberPasswords(SIX_LETTER_FILE)];
@@ -393,16 +400,17 @@ int main(int argc, char* argv[]){
 	    guessNumbers(sixLetter, 6, NUM_SIX_LETTER);
 		checkFilePasswords(COMMON_FILE, fourLetter, 4, NUM_FOUR_LETTER);
 		checkFilePasswords(COMMON_FILE, sixLetter, 6, NUM_SIX_LETTER);
-		bruteForce(4, ALPHABET_LENGTH, ALPHABET_OFFSET);
+		bruteForce(4, FULL_ALPHABET_LENGTH, FULL_ALPHABET_OFFSET);
 		checkFilePasswords(BRUTE_FILE, fourLetter, 4, NUM_FOUR_LETTER);
-		bruteForce(6, 25, 97);
+		bruteForce(6, ALPHABET_LENGTH, ALPHABET_OFFSET);
 		checkFilePasswords(BRUTE_FILE, sixLetter, 6, NUM_SIX_LETTER);
 	}
-
+	// Simply generates guesses and displays them.
 	else if(argc == 2){
 		int maxGuesses = atoi(argv[1]);
 		generateGuesses(maxGuesses, 6);
 	}
+	// Tests plain-text passwords from a file against hashed passwords.
 	else if(argc == 3){
 		char* passwordFile = argv[1];
 		char* hashFile = argv[2];
