@@ -6,7 +6,7 @@ In order to run the program:
 
 In the command line: 'make'
 
-Followed by: ./crack {any arguments you wish to include}
+Followed by: './crack {any arguments you wish to include}'
 
 If crack is run with no arguments, it should generate guesses, and test them against the
 SHA256 hashes (hashes found in pwd4sha256 and pwd6sha256). When it finds one, it should print one line, consisting of the plaintext password, a space, and an integer 1-30 indicating which hash it matches. For example:
