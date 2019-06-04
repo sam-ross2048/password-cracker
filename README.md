@@ -2,8 +2,10 @@ This project was developed as a means of using common password frailties in orde
 passwords that have been hashed to a SHA256 value. Can be used to test generated passwords against existing
 SHA256 hashes, or to simply generate a finite number of guesses.
 
-In order to run the program:\n
-In the command line: 'make'\n
+In order to run the program:
+
+In the command line: 'make'
+
 Followed by: ./crack {any arguments you wish to include}
 
 If crack is run with no arguments, it should generate guesses, and test them against the
